@@ -4,6 +4,7 @@ course project.
 """
 
 import codecs
+import sslexer
 
 
 def read_file(filename: str) -> str:
@@ -25,7 +26,7 @@ def tokenize_file(filename: str):
     :param filename: File to read.
     """
     file_data: str = read_file(filename=filename)
-    print(file_data)
+    sslexer.tokenize_data(data=file_data)
 
 
 if __name__ == '__main__':
