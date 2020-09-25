@@ -8,3 +8,5 @@
 # PLY yacc generated files
 **/parser.out
 **/parsetab.py
+
+.idea
