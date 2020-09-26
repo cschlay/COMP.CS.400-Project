@@ -17,6 +17,14 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "ASSIGN")
         self.assertEqual(token.value, ":=")
 
+    def test_token_curly_brackets(self):
+        token = sslexer.tokenize_data(data="{")[0]
+        self.assertEqual(token.type, "LCURLY")
+        self.assertEqual(token.value, "{")
+        token = sslexer.tokenize_data(data="}")[0]
+        self.assertEqual(token.type, "RCURLY")
+        self.assertEqual(token.value, "}")
+
     def test_token_ident(self):
         # Length just two.
         token = sslexer.tokenize_data(data=" ab")[0]
@@ -40,15 +48,21 @@ class TokenTest(TestCase):
         with self.assertRaises(Exception):
             sslexer.tokenize_data(data="a")
 
-    def test_token_lparen(self):
+    def test_token_parenthesis(self):
         token = sslexer.tokenize_data(data="(")[0]
         self.assertEqual(token.type, "LPAREN")
         self.assertEqual(token.value, "(")
-
-    def test_token_rparen(self):
         token = sslexer.tokenize_data(data=")")[0]
         self.assertEqual(token.type, "RPAREN")
         self.assertEqual(token.value, ")")
+
+    def test_token_square_brackets(self):
+        token = sslexer.tokenize_data(data="[")[0]
+        self.assertEqual(token.type, "LSQUARE")
+        self.assertEqual(token.value, "[")
+        token = sslexer.tokenize_data(data="]")[0]
+        self.assertEqual(token.type, "RSQUARE")
+        self.assertEqual(token.value, "]")
 
     def test_reserved_keywords(self):
         pass
