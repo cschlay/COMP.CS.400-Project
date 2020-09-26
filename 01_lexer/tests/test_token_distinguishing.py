@@ -20,7 +20,9 @@ class TokenDistinguishTest(TestCase):
         self.assertEqual(tokens[1].type, "GTEQ")
 
     def test_operator_lt_and_lte(self):
-        pass
+        tokens = sslexer.tokenize_data(data="<<=")
+        self.assertEqual(tokens[0].type, "LT")
+        self.assertEqual(tokens[1].type, "LTEQ")
 
     def test_string_literals_and_variable_name(self):
         pass
