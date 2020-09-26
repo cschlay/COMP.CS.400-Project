@@ -130,6 +130,21 @@ functionality makes lexical analysis programs mostly same.
 
 ### a. Keywords
 
+They are done as PLY documentation recommended in section 4.3.
+
+They are defined as dictionary.
+Every token that can be lowercase only is defined as function and the
+type is changed to keywords type if it is found in the dictionary. 
+
+E.g. `IDENT` can be all lowercase so it is defined as
+
+```
+def t_IDENT(t):
+    r"[a-z]{1}[0-9A-Za-z_]+"
+    t.type = reserved.get(t.value, "IDENT")
+    return t
+```
+
 ### b. Comments
 
 ### c. Whitespaces
@@ -146,7 +161,19 @@ functionality makes lexical analysis programs mostly same.
 
 ### a. Function & variable names
 
+As defined in the instructions functions starts with uppercase letter
+and variable has to be lowercase so defining this into a regular expression distinguishes them.
+
+```
+Function: r"[A-Z]{1}[0-9a-z_]+" 
+Variable: r"[a-z]{1}[0-9A-Za-z_]+"
+```
+
 ### b. Keywords & variable names
+
+Keywords are checked after variable is matched.
+If after the pattern matches the value is same as a keywordd then the type is changed to keywords.
+This is done by checking if it is in `reserved` variable, which is a dict of reserved keywords.
 
 ### c. Operators > and >=
 
