@@ -46,6 +46,11 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "DECIMAL_LITERAL")
         self.assertEqual(token.value, "-20.2")
 
+        # Zero
+        token = sslexer.tokenize_data(data="0.0")[0]
+        self.assertEqual(token.type, "DECIMAL_LITERAL")
+        self.assertEqual(token.value, "0.0")
+
     def test_token_equalities(self):
         token = sslexer.tokenize_data(data="=")[0]
         self.assertEqual(token.type, "EQ")
@@ -120,6 +125,13 @@ class TokenTest(TestCase):
         token = sslexer.tokenize_data(data="-1234")[0]
         self.assertEqual(token.type, "INT_LITERAL")
         self.assertEqual(token.value, "-1234")
+
+        token = sslexer.tokenize_data(data="0")[0]
+        self.assertEqual(token.type, "INT_LITERAL")
+        self.assertEqual(token.value, "0")
+
+        tokens = sslexer.tokenize_data(data="0000")
+        self.assertEqual(len(tokens), 4)
 
     def test_token_math(self):
         # Tests only math operators.
