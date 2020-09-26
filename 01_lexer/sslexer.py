@@ -37,23 +37,41 @@ reserved: Dict[str, str] = {word: word.upper() for word in reserved_keywords}
 tokens: List[str] = [
                         "COMMENT",
                         "ASSIGN",
-                        "IDENT",
+                        # Brackets and parentheses
                         "LPAREN",
                         "RPAREN",
                         "LSQUARE",
                         "RSQUARE",
                         "LCURLY",
-                        "RCURLY"
+                        "RCURLY",
+                        # Math
+                        "EQ",
+                        "NOTEQ",
+                        "LT",
+                        "LTEQ",
+                        "GT",
+                        "GTEQ",
+                        # Long tokens
+                        "IDENT",
+
                     ] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
 t_ASSIGN: str = r":="
+# Parenthesis
 t_LPAREN: str = r"\("
 t_RPAREN: str = r"\)"
 t_LSQUARE: str = r"\["
 t_RSQUARE: str = r"\]"
 t_LCURLY: str = r"\{"
 t_RCURLY: str = r"\}"
+# Math
+t_EQ: str = r"="
+t_NOTEQ: str = r"!="
+t_LT: str = r"<"
+t_LTEQ: str = r"<="
+t_GT: str = r">"
+t_GTEQ: str = r">="
 
 
 # Variable name definition. The length has to be at least one and not a reserved word.

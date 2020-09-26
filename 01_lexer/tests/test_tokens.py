@@ -13,10 +13,6 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "ASSIGN")
         self.assertEqual(token.value, ":=")
 
-        token = sslexer.tokenize_data(data=" := ")[0]
-        self.assertEqual(token.type, "ASSIGN")
-        self.assertEqual(token.value, ":=")
-
     def test_token_curly_brackets(self):
         token = sslexer.tokenize_data(data="{")[0]
         self.assertEqual(token.type, "LCURLY")
@@ -24,6 +20,31 @@ class TokenTest(TestCase):
         token = sslexer.tokenize_data(data="}")[0]
         self.assertEqual(token.type, "RCURLY")
         self.assertEqual(token.value, "}")
+
+    def test_token_equalities(self):
+        token = sslexer.tokenize_data(data="=")[0]
+        self.assertEqual(token.type, "EQ")
+        self.assertEqual(token.value, "=")
+
+        token = sslexer.tokenize_data(data="!=")[0]
+        self.assertEqual(token.type, "NOTEQ")
+        self.assertEqual(token.value, "!=")
+
+        token = sslexer.tokenize_data(data="<")[0]
+        self.assertEqual(token.type, "LT")
+        self.assertEqual(token.value, "<")
+
+        token = sslexer.tokenize_data(data="<=")[0]
+        self.assertEqual(token.type, "LTEQ")
+        self.assertEqual(token.value, "<=")
+
+        token = sslexer.tokenize_data(data=">")[0]
+        self.assertEqual(token.type, "GT")
+        self.assertEqual(token.value, ">")
+
+        token = sslexer.tokenize_data(data=">=")[0]
+        self.assertEqual(token.type, "GTEQ")
+        self.assertEqual(token.value, ">=")
 
     def test_token_ident(self):
         # Length just two.
@@ -47,6 +68,10 @@ class TokenTest(TestCase):
         # Length is too short.
         with self.assertRaises(Exception):
             sslexer.tokenize_data(data="a")
+
+    def test_token_math(self):
+        # Tests only math operators.
+        pass
 
     def test_token_parenthesis(self):
         token = sslexer.tokenize_data(data="(")[0]
