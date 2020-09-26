@@ -13,6 +13,12 @@ class TokenTest(TestCase):
         for char in ignored_characters:
             self.assertFalse(sslexer.tokenize_data(data=char), msg=char)
 
+    def test_ignored_comment(self):
+        self.assertFalse(sslexer.tokenize_data(data="...comment text..."))
+        self.assertFalse(sslexer.tokenize_data(data="... ..."))
+        self.assertFalse(sslexer.tokenize_data(data="......"))
+        self.assertFalse(sslexer.tokenize_data(data="...comment ... inside comment ... ..."))
+
 
 class InvalidTokenTest(TestCase):
     """Test some invalid tokens."""

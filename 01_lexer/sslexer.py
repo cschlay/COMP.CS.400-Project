@@ -10,8 +10,16 @@ tokens: Tuple[str, ...] = ("COMMENT", "ASSIGN")
 
 t_COMMENT: str = r"...."
 
-# According to PLY docs, t_ignore is used for ignoring characters.
+# According to PLY docs, t_ignore is used for ignoring characters and tokens.
 t_ignore: str = " \r"
+t_ignore_COMMENT: str = r"\.\.\..*\.\.\."
+
+
+def t_newline(t):
+    """Defines the newline and keeps track of it.
+    The docs says that PLY doesn't know newlines by default."""
+    r'\n'
+    t.lexer.lineno += 1
 
 
 def t_error(t):
