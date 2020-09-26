@@ -210,6 +210,14 @@ different set of characters so this distinguishes them.
 
 ### f. Integer literals and decimal literals
 
+As in GT and GTE literals the sorted lengths of regex differentiates the decimal and integers.
+The dot `.` and required one digit in regex is what truly distinguishes them.
+
+```
+DECIMAL: r"-?[0-9]+\.[0-9]{1}"
+INT: r"-?[0-9]+"
+```
+
 ## 5. Extras
 
 Not yet.

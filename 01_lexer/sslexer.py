@@ -91,6 +91,7 @@ t_DIV: str = r"/"
 # The long tokens
 t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
 t_COORDINATE_IDENT: str = r"[A-Z]{1,2}[0-9]{1,3}"  # 1-2 capital letters and 1-3 digits
+# TODO: Noticed that number definitions are invalid because of 000000 is still valid. So 0 or [1-9]+
 t_DECIMAL_LITERAL: str = r"-?[0-9]+\.[0-9]{1}"  # only one decimal
 t_INT_LITERAL: str = r"-?[0-9]+"  # integers in traditional sense
 
