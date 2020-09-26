@@ -13,6 +13,27 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "ASSIGN")
         self.assertEqual(token.value, ":=")
 
+    def test_token_coordinate_ident(self):
+        token = sslexer.tokenize_data(data="CL123")[0]
+        self.assertEqual(token.type, "COORDINATE_IDENT")
+        self.assertEqual(token.value, "CL123")
+
+        # Other kind of allowed of correct variations.
+        token = sslexer.tokenize_data(data="C123")[0]
+        self.assertEqual(token.type, "COORDINATE_IDENT")
+        self.assertEqual(token.value, "C123")
+
+        token = sslexer.tokenize_data(data="C1")[0]
+        self.assertEqual(token.type, "COORDINATE_IDENT")
+        self.assertEqual(token.value, "C1")
+
+        # Too many capital letters
+        with self.assertRaises(Exception):
+            sslexer.tokenize_data(data="CCC")
+        # Too many digits
+        with self.assertRaises(Exception):
+            sslexer.tokenize_data(data="C1234")
+
     def test_token_curly_brackets(self):
         token = sslexer.tokenize_data(data="{")[0]
         self.assertEqual(token.type, "LCURLY")
