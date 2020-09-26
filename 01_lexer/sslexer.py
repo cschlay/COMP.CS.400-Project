@@ -2,11 +2,36 @@
 Actual lexer implementation for SheetScript.
 """
 
-from typing import List, Tuple
+from typing import List
 
 import ply.lex
 
-tokens: Tuple[str, ...] = ("COMMENT", "ASSIGN")
+# Reserved keywords, recommended to not declared as token by docs 4.3..
+# The docs showed an example of using dict but it might be simpler to just use list and map it if necessary.
+# I have preserved the order given in the instructions in case the order matter later.
+reserved_keywords: List[str] = [
+    "scalar",
+    "range",
+    "do",
+    "done",
+    "is",
+    "while",
+    "for",
+    "if",
+    "then",
+    "else",
+    "endif",
+    "function",
+    "subroutine",
+    "return",
+    "end",
+    "print_sheet",
+    "print_scalar",
+    "print_range"
+]
+
+# Token definitions.
+tokens: List[str] = ["COMMENT", "ASSIGN"] + list(map(lambda word: word.upper(), reserved_keywords))
 
 t_COMMENT: str = r"...."
 
@@ -18,7 +43,7 @@ t_ignore_COMMENT: str = r"\.\.\..*\.\.\."
 def t_newline(t):
     """Defines the newline and keeps track of it.
     The docs says that PLY doesn't know newlines by default."""
-    r'\n'
+    r"\n"
     t.lexer.lineno += 1
 
 
@@ -30,7 +55,7 @@ def t_error(t):
 
     :param t: the token where error occurred
     """
-    raise Exception(f"Illegal character '{t.value[0]}' at line { t.lexer.lineno}")
+    raise Exception(f"Illegal character '{t.value[0]}' at line {t.lexer.lineno}")
 
 
 lexer: ply.lex.Lexer = ply.lex.lex()

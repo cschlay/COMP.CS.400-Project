@@ -8,6 +8,9 @@ import sslexer
 class TokenTest(TestCase):
     """Test all valid tokens."""
 
+    def test_reserved_keywords(self):
+        pass
+
     def test_ignored_characters(self):
         ignored_characters: List[str] = [" "]
         for char in ignored_characters:
