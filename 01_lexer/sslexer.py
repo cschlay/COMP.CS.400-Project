@@ -64,6 +64,7 @@ tokens: List[str] = [
                         "INT_LITERAL",
                         "IDENT",
                         "RANGE_IDENT",
+                        "SHEET_IDENT"
                     ] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
@@ -90,7 +91,7 @@ t_DIV: str = r"/"
 t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
 t_COORDINATE_IDENT: str = r"[A-Z]{1,2}[0-9]{1,3}"  # 1-2 capital letters and 1-3 digits
 t_DECIMAL_LITERAL: str = r"-?[0-9]+\.[0-9]{1}"  # only one decimal
-t_INT_LITERAL: str = r"-?[0-9]+"
+t_INT_LITERAL: str = r"-?[0-9]+"    # integers in traditional sense
 
 
 # Variable name definition. The length has to be at least one and not a reserved word.
@@ -100,8 +101,8 @@ def t_IDENT(t):
     return t
 
 
-t_RANGE_IDENT: str = r"_{1}[0-9A-Za-z_]+"
-
+t_RANGE_IDENT: str = r"_{1}[0-9A-Za-z_]+"   # just like IDENT but starts with underscore
+t_SHEET_IDENT: str = r"[A-Z]+"  # capital letter only text
 
 # According to PLY docs, t_ignore is used for ignoring characters and tokens.
 t_ignore: str = " \r"

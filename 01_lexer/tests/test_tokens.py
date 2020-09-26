@@ -27,10 +27,6 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "COORDINATE_IDENT")
         self.assertEqual(token.value, "C1")
 
-        # Too many capital letters
-        with self.assertRaises(Exception):
-            sslexer.tokenize_data(data="CCC")
-
     def test_token_curly_brackets(self):
         token = sslexer.tokenize_data(data="{")[0]
         self.assertEqual(token.type, "LCURLY")
@@ -138,6 +134,11 @@ class TokenTest(TestCase):
         token = sslexer.tokenize_data(data="_1a5s6d4")[0]
         self.assertEqual(token.type, "RANGE_IDENT")
         self.assertEqual(token.value, "_1a5s6d4")
+
+    def test_token_sheet_ident(self):
+        token = sslexer.tokenize_data(data="OK")[0]
+        self.assertEqual(token.type, "SHEET_IDENT")
+        self.assertEqual(token.value, "OK")
 
     def test_token_square_brackets(self):
         token = sslexer.tokenize_data(data="[")[0]
