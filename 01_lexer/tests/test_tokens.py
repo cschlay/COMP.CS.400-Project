@@ -104,7 +104,10 @@ class TokenTest(TestCase):
         self.assertEqual(token.value, "]")
 
     def test_reserved_keywords(self):
-        pass
+        for keyword, token_type in sslexer.reserved.items():
+            token = sslexer.tokenize_data(data=keyword)[0]
+            self.assertEqual(token.type, token_type)
+            self.assertEqual(token.value, keyword)
 
     def test_ignored_characters(self):
         ignored_characters: List[str] = [" "]
