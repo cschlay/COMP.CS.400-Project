@@ -15,7 +15,9 @@ class TokenDistinguishTest(TestCase):
         self.assertEqual(tokens[1].type, "IDENT")
 
     def test_operator_gt_and_gte(self):
-        pass
+        tokens = sslexer.tokenize_data(data=">>=")
+        self.assertEqual(tokens[0].type, "GT")
+        self.assertEqual(tokens[1].type, "GTEQ")
 
     def test_operator_lt_and_lte(self):
         pass

@@ -177,6 +177,16 @@ This is done by checking if it is in `reserved` variable, which is a dict of res
 
 ### c. Operators > and >=
 
+The operators are defined as exact regex patterns
+
+```
+t_GT: str = r">"
+t_GTEQ: str = r">="
+```
+
+However, I have preserved the order given in the instructions.
+This turns to be possible because PLY sorts the longest regex to be matched first according to documentation 4.3.
+
 ### d. String literals and variable names
 
 ### e. Comments and other code
