@@ -2,14 +2,16 @@
 Actual lexer implementation for SheetScript.
 """
 
-from typing import Tuple
+from typing import List, Tuple
 
 import ply.lex
 
-tokens: Tuple[str, ...] = ("COMMENT", "WHITESPACE")
+tokens: Tuple[str, ...] = ("COMMENT", "ASSIGN")
 
-t_COMMENT: str = r'C'
-t_WHITESPACE: str = r'W'
+t_COMMENT: str = r"...."
+
+# According to PLY docs, t_ignore is used for ignoring characters.
+t_ignore: str = " \r"
 
 
 def t_error(t):
@@ -26,10 +28,18 @@ def t_error(t):
 lexer: ply.lex.Lexer = ply.lex.lex()
 
 
-def tokenize_data(data: str):
+def tokenize_data(data: str) -> List[ply.lex.LexToken]:
     """
     Performs the actual tokenization with PLY lexer.
+
+    :param data:
+    :return: A list of LexToken instances.
     """
     lexer.input(data)
+
+    print(list(lexer))
+    token_list: List[ply.lex.LexToken] = []
     for token in lexer:
-        print(token)
+        token_list.append(token)
+
+    return token_list
