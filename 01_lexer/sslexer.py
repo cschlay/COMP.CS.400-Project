@@ -64,7 +64,8 @@ tokens: List[str] = [
                         "INT_LITERAL",
                         "IDENT",
                         "RANGE_IDENT",
-                        "SHEET_IDENT"
+                        "SHEET_IDENT",
+                        "FUNC_IDENT"
                     ] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
@@ -103,6 +104,7 @@ def t_IDENT(t):
 
 t_RANGE_IDENT: str = r"_{1}[0-9A-Za-z_]+"   # just like IDENT but starts with underscore
 t_SHEET_IDENT: str = r"[A-Z]+"  # capital letter only text
+t_FUNC_IDENT: str = r"[A-Z]{1}[0-9a-z_]+"
 
 # According to PLY docs, t_ignore is used for ignoring characters and tokens.
 t_ignore: str = " \r"

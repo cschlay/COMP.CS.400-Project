@@ -71,6 +71,23 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "GTEQ")
         self.assertEqual(token.value, ">=")
 
+    def test_token_func_ident(self):
+        token = sslexer.tokenize_data(data="Function")[0]
+        self.assertEqual(token.type, "FUNC_IDENT")
+        self.assertEqual(token.value, "Function")
+
+        token = sslexer.tokenize_data(data="Function_")[0]
+        self.assertEqual(token.type, "FUNC_IDENT")
+        self.assertEqual(token.value, "Function_")
+
+        token = sslexer.tokenize_data(data="Fx")[0]
+        self.assertEqual(token.type, "FUNC_IDENT")
+        self.assertEqual(token.value, "Fx")
+
+        token = sslexer.tokenize_data(data="F_")[0]
+        self.assertEqual(token.type, "FUNC_IDENT")
+        self.assertEqual(token.value, "F_")
+
     def test_token_ident(self):
         # Length just two.
         token = sslexer.tokenize_data(data=" ab")[0]
