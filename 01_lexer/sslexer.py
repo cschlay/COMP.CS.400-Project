@@ -33,7 +33,9 @@ reserved_keywords: List[str] = [
 # Token definitions.
 tokens: List[str] = ["COMMENT", "ASSIGN"] + list(map(lambda word: word.upper(), reserved_keywords))
 
+# The order for tokens are also preserved as given in case it matters.
 t_COMMENT: str = r"...."
+t_ASSIGN: str = r":="
 
 # According to PLY docs, t_ignore is used for ignoring characters and tokens.
 t_ignore: str = " \r"
@@ -69,10 +71,4 @@ def tokenize_data(data: str) -> List[ply.lex.LexToken]:
     :return: A list of LexToken instances.
     """
     lexer.input(data)
-
-    print(list(lexer))
-    token_list: List[ply.lex.LexToken] = []
-    for token in lexer:
-        token_list.append(token)
-
-    return token_list
+    return list(lexer)

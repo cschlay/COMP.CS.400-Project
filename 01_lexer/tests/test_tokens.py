@@ -8,6 +8,10 @@ import sslexer
 class TokenTest(TestCase):
     """Test all valid tokens."""
 
+    def test_token_assign(self):
+        x = sslexer.tokenize_data(data=":=")
+        print(x)
+
     def test_reserved_keywords(self):
         pass
 

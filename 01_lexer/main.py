@@ -4,6 +4,9 @@ course project.
 """
 
 import codecs
+import ply.lex
+from typing import List
+
 import sslexer
 
 
@@ -26,7 +29,9 @@ def tokenize_file(filename: str):
     :param filename: File to read.
     """
     file_data: str = read_file(filename=filename)
-    sslexer.tokenize_data(data=file_data)
+    token_list: List[ply.lex.LexToken] = sslexer.tokenize_data(data=file_data)
+    for token in token_list:
+        print(token)
 
 
 if __name__ == '__main__':
