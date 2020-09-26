@@ -71,7 +71,21 @@ class TokenTest(TestCase):
 
     def test_token_math(self):
         # Tests only math operators.
-        pass
+        token = sslexer.tokenize_data(data="+")[0]
+        self.assertEqual(token.type, "PLUS")
+        self.assertEqual(token.value, "+")
+
+        token = sslexer.tokenize_data(data="-")[0]
+        self.assertEqual(token.type, "MINUS")
+        self.assertEqual(token.value, "-")
+
+        token = sslexer.tokenize_data(data="*")[0]
+        self.assertEqual(token.type, "MULT")
+        self.assertEqual(token.value, "*")
+
+        token = sslexer.tokenize_data(data="/")[0]
+        self.assertEqual(token.type, "DIV")
+        self.assertEqual(token.value, "/")
 
     def test_token_parenthesis(self):
         token = sslexer.tokenize_data(data="(")[0]

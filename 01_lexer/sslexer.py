@@ -51,6 +51,10 @@ tokens: List[str] = [
                         "LTEQ",
                         "GT",
                         "GTEQ",
+                        "PLUS",
+                        "MINUS",
+                        "MULT",
+                        "DIV",
                         # Long tokens
                         "IDENT",
 
@@ -72,7 +76,10 @@ t_LT: str = r"<"
 t_LTEQ: str = r"<="
 t_GT: str = r">"
 t_GTEQ: str = r">="
-
+t_PLUS: str = r"\+"
+t_MINUS: str = r"-"
+t_MULT: str = r"\*"
+t_DIV: str = r"/"
 
 # Variable name definition. The length has to be at least one and not a reserved word.
 def t_IDENT(t):
