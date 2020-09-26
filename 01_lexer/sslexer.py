@@ -56,6 +56,7 @@ tokens: List[str] = [
                         "MULT",
                         "DIV",
                         # Long tokens
+                        "INFO_STRING",
                         "IDENT",
 
                     ] + list(reserved.values())
@@ -80,6 +81,9 @@ t_PLUS: str = r"\+"
 t_MINUS: str = r"-"
 t_MULT: str = r"\*"
 t_DIV: str = r"/"
+# The long tokens
+t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
+
 
 # Variable name definition. The length has to be at least one and not a reserved word.
 def t_IDENT(t):

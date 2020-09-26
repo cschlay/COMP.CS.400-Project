@@ -69,6 +69,11 @@ class TokenTest(TestCase):
         with self.assertRaises(Exception):
             sslexer.tokenize_data(data="a")
 
+    def test_info_string(self):
+        token = sslexer.tokenize_data(data="!infostring!")[0]
+        self.assertEqual(token.type, "INFO_STRING")
+        self.assertEqual(token.value, "!infostring!")
+
     def test_token_math(self):
         # Tests only math operators.
         token = sslexer.tokenize_data(data="+")[0]
