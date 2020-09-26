@@ -34,11 +34,12 @@ reserved_keywords: List[str] = [
 reserved: Dict[str, str] = {word: word.upper() for word in reserved_keywords}
 
 # Token definitions.
-tokens: List[str] = ["COMMENT", "ASSIGN", "IDENT"] + list(reserved.values())
+tokens: List[str] = ["COMMENT", "ASSIGN", "IDENT", "LPAREN", "RPAREN"] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
 t_ASSIGN: str = r":="
-
+t_LPAREN: str = r"\("
+t_RPAREN: str = r"\)"
 
 # Variable name definition. The length has to be at least one and not a reserved word.
 def t_IDENT(t):
