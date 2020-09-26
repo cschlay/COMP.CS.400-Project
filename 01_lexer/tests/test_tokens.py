@@ -9,8 +9,37 @@ class TokenTest(TestCase):
     """Test all valid tokens."""
 
     def test_token_assign(self):
-        x = sslexer.tokenize_data(data=":=")
-        print(x)
+        token = sslexer.tokenize_data(data=":=")[0]
+        self.assertEqual(token.type, "ASSIGN")
+        self.assertEqual(token.value, ":=")
+
+        token = sslexer.tokenize_data(data=" := ")[0]
+        self.assertEqual(token.type, "ASSIGN")
+        self.assertEqual(token.value, ":=")
+
+    def test_ident(self):
+        # Length just two.
+        token = sslexer.tokenize_data(data=" ab")[0]
+        self.assertEqual(token.type, "IDENT")
+        self.assertEqual(token.value, "ab")
+
+        # Length is much greater than two.
+        token = sslexer.tokenize_data(data="the_length_is_much_greater_than_two")[0]
+        self.assertEqual(token.type, "IDENT")
+        self.assertEqual(token.value, "the_length_is_much_greater_than_two")
+
+        # Contains invalid characters
+        with self.assertRaises(Exception):
+            sslexer.tokenize_data(data="öäöäö")
+
+        # Starts with number
+        with self.assertRaises(Exception):
+            sslexer.tokenize_data(data="123956abs")
+
+        # Length is too short.
+        with self.assertRaises(Exception):
+            sslexer.tokenize_data(data="a")
+
 
     def test_reserved_keywords(self):
         pass
@@ -25,8 +54,3 @@ class TokenTest(TestCase):
         self.assertFalse(sslexer.tokenize_data(data="... ..."))
         self.assertFalse(sslexer.tokenize_data(data="......"))
         self.assertFalse(sslexer.tokenize_data(data="...comment ... inside comment ... ..."))
-
-
-class InvalidTokenTest(TestCase):
-    """Test some invalid tokens."""
-    pass

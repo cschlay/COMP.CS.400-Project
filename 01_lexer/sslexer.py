@@ -1,8 +1,10 @@
 """
 Actual lexer implementation for SheetScript.
+
+[1] Note to self, the token functions cannot have docstrings! The first line must be regular expression!
 """
 
-from typing import List
+from typing import Dict, List
 
 import ply.lex
 
@@ -29,22 +31,30 @@ reserved_keywords: List[str] = [
     "print_scalar",
     "print_range"
 ]
+reserved: Dict[str, str] = {word: word.upper() for word in reserved_keywords}
 
 # Token definitions.
-tokens: List[str] = ["COMMENT", "ASSIGN"] + list(map(lambda word: word.upper(), reserved_keywords))
+tokens: List[str] = ["COMMENT", "ASSIGN", "IDENT"] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
-t_COMMENT: str = r"...."
 t_ASSIGN: str = r":="
+
+
+# Variable name definition. The length has to be at least one and not a reserved word.
+def t_IDENT(t):
+    r"[a-z]{1}[0-9A-Za-z_]+"
+    t.type = reserved.get(t.value, "IDENT")
+    return t
+
 
 # According to PLY docs, t_ignore is used for ignoring characters and tokens.
 t_ignore: str = " \r"
 t_ignore_COMMENT: str = r"\.\.\..*\.\.\."
 
 
+# Defines the newline and keeps track of it.
+# The docs says that PLY doesn't know newlines by default.
 def t_newline(t):
-    """Defines the newline and keeps track of it.
-    The docs says that PLY doesn't know newlines by default."""
     r"\n"
     t.lexer.lineno += 1
 
@@ -52,7 +62,6 @@ def t_newline(t):
 def t_error(t):
     """
     The required error handling for PLY.
-
     Raises a generic Exception with illegal character at given line.
 
     :param t: the token where error occurred
