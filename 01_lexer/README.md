@@ -126,3 +126,42 @@ for token in lexer:
 Enforcing the naming conventions and having minimal parts for other
 functionality makes lexical analysis programs mostly same.
 
+## 3. Code Explanation
+
+### a. Keywords
+
+### b. Comments
+
+### c. Whitespaces
+
+### d. Operators & delimiters
+
+### e. Decimal literals
+
+### f. String literals
+
+### g. Functional names
+
+## 4. Distinguishing elements
+
+### a. Function & variable names
+
+### b. Keywords & variable names
+
+### c. Operators > and >=
+
+### d. String literals and variable names
+
+### e. Comments and other code
+
+### f. Integer literals and decimal literals
+
+## 5. Extras
+
+Not yet.
+
+## 6. Thoughts
+
+I think this phase was quite mechanical and the code should be 
+mostly similar to PLY documentation.
+There wasn't much room for creativity.
