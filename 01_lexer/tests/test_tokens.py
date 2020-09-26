@@ -30,9 +30,6 @@ class TokenTest(TestCase):
         # Too many capital letters
         with self.assertRaises(Exception):
             sslexer.tokenize_data(data="CCC")
-        # Too many digits
-        with self.assertRaises(Exception):
-            sslexer.tokenize_data(data="C1234")
 
     def test_token_curly_brackets(self):
         token = sslexer.tokenize_data(data="{")[0]
@@ -52,10 +49,6 @@ class TokenTest(TestCase):
         token = sslexer.tokenize_data(data="-20.2")[0]
         self.assertEqual(token.type, "DECIMAL_LITERAL")
         self.assertEqual(token.value, "-20.2")
-
-        # Too many decimals
-        with self.assertRaises(Exception):
-            sslexer.tokenize_data(data="-20.20")
 
     def test_token_equalities(self):
         token = sslexer.tokenize_data(data="=")[0]
@@ -97,18 +90,23 @@ class TokenTest(TestCase):
         with self.assertRaises(Exception):
             sslexer.tokenize_data(data="öäöäö")
 
-        # Starts with number
-        with self.assertRaises(Exception):
-            sslexer.tokenize_data(data="123956abs")
-
         # Length is too short.
         with self.assertRaises(Exception):
-            sslexer.tokenize_data(data="a")
+            print(sslexer.tokenize_data(data="a"))
 
     def test_info_string(self):
         token = sslexer.tokenize_data(data="!infostring!")[0]
         self.assertEqual(token.type, "INFO_STRING")
         self.assertEqual(token.value, "!infostring!")
+
+    def test_int_literal(self):
+        token = sslexer.tokenize_data(data="1234")[0]
+        self.assertEqual(token.type, "INT_LITERAL")
+        self.assertEqual(token.value, "1234")
+
+        token = sslexer.tokenize_data(data="-1234")[0]
+        self.assertEqual(token.type, "INT_LITERAL")
+        self.assertEqual(token.value, "-1234")
 
     def test_token_math(self):
         # Tests only math operators.

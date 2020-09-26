@@ -61,6 +61,7 @@ tokens: List[str] = [
                         "INFO_STRING",
                         "COORDINATE_IDENT",
                         "DECIMAL_LITERAL",
+                        "INT_LITERAL",
                         "IDENT",
                     ] + list(reserved.values())
 
@@ -88,6 +89,7 @@ t_DIV: str = r"/"
 t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
 t_COORDINATE_IDENT: str = r"[A-Z]{1,2}[0-9]{1,3}"  # 1-2 capital letters and 1-3 digits
 t_DECIMAL_LITERAL: str = r"-?[0-9]+\.[0-9]{1}"  # only one decimal
+t_INT_LITERAL: str = r"-?[0-9]+"
 
 
 # Variable name definition. The length has to be at least one and not a reserved word.
