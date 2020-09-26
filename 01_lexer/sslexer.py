@@ -63,6 +63,7 @@ tokens: List[str] = [
                         "DECIMAL_LITERAL",
                         "INT_LITERAL",
                         "IDENT",
+                        "RANGE_IDENT",
                     ] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
@@ -97,6 +98,9 @@ def t_IDENT(t):
     r"[a-z]{1}[0-9A-Za-z_]+"
     t.type = reserved.get(t.value, "IDENT")
     return t
+
+
+t_RANGE_IDENT: str = r"_{1}[0-9A-Za-z_]+"
 
 
 # According to PLY docs, t_ignore is used for ignoring characters and tokens.

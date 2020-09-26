@@ -94,12 +94,12 @@ class TokenTest(TestCase):
         with self.assertRaises(Exception):
             print(sslexer.tokenize_data(data="a"))
 
-    def test_info_string(self):
+    def test_token_info_string(self):
         token = sslexer.tokenize_data(data="!infostring!")[0]
         self.assertEqual(token.type, "INFO_STRING")
         self.assertEqual(token.value, "!infostring!")
 
-    def test_int_literal(self):
+    def test_token_int_literal(self):
         token = sslexer.tokenize_data(data="1234")[0]
         self.assertEqual(token.type, "INT_LITERAL")
         self.assertEqual(token.value, "1234")
@@ -133,6 +133,11 @@ class TokenTest(TestCase):
         token = sslexer.tokenize_data(data=")")[0]
         self.assertEqual(token.type, "RPAREN")
         self.assertEqual(token.value, ")")
+
+    def test_token_range_ident(self):
+        token = sslexer.tokenize_data(data="_1a5s6d4")[0]
+        self.assertEqual(token.type, "RANGE_IDENT")
+        self.assertEqual(token.value, "_1a5s6d4")
 
     def test_token_square_brackets(self):
         token = sslexer.tokenize_data(data="[")[0]
