@@ -42,6 +42,21 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "RCURLY")
         self.assertEqual(token.value, "}")
 
+    def test_token_decimal_literal(self):
+        # Positive decimal
+        token = sslexer.tokenize_data(data="20.2")[0]
+        self.assertEqual(token.type, "DECIMAL_LITERAL")
+        self.assertEqual(token.value, "20.2")
+
+        # Negative decimal
+        token = sslexer.tokenize_data(data="-20.2")[0]
+        self.assertEqual(token.type, "DECIMAL_LITERAL")
+        self.assertEqual(token.value, "-20.2")
+
+        # Too many decimals
+        with self.assertRaises(Exception):
+            sslexer.tokenize_data(data="-20.20")
+
     def test_token_equalities(self):
         token = sslexer.tokenize_data(data="=")[0]
         self.assertEqual(token.type, "EQ")

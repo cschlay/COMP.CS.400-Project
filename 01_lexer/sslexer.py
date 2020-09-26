@@ -2,6 +2,8 @@
 Actual lexer implementation for SheetScript.
 
 [1] Note to self, the token functions cannot have docstrings! The first line must be regular expression!
+[2] Note for reader short notations such as \d in regular expressions are avoided if possible
+to improve flexibility and readability.
 """
 
 from typing import Dict, List
@@ -58,8 +60,8 @@ tokens: List[str] = [
                         # Long tokens
                         "INFO_STRING",
                         "COORDINATE_IDENT",
+                        "DECIMAL_LITERAL",
                         "IDENT",
-
                     ] + list(reserved.values())
 
 # The order for tokens are also preserved as given in case it matters.
@@ -85,6 +87,7 @@ t_DIV: str = r"/"
 # The long tokens
 t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
 t_COORDINATE_IDENT: str = r"[A-Z]{1,2}[0-9]{1,3}"  # 1-2 capital letters and 1-3 digits
+t_DECIMAL_LITERAL: str = r"-?[0-9]+\.[0-9]{1}"  # only one decimal
 
 
 # Variable name definition. The length has to be at least one and not a reserved word.
