@@ -61,6 +61,16 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "DECIMAL_LITERAL")
         self.assertEqual(token.value, "0.0")
 
+    def test_token_colon(self):
+        token = sslexer.tokenize_data(data=":")[0]
+        self.assertEqual(token.type, "COLON")
+        self.assertEqual(token.value, ":")
+
+    def test_token_dollar(self):
+        token = sslexer.tokenize_data(data="$")[0]
+        self.assertEqual(token.type, "DOLLAR")
+        self.assertEqual(token.value, "$")
+
     def test_token_dotdot(self):
         token = sslexer.tokenize_data(data="..")[0]
         self.assertEqual(token.type, "DOTDOT")
@@ -165,6 +175,11 @@ class TokenTest(TestCase):
         token = sslexer.tokenize_data(data="/")[0]
         self.assertEqual(token.type, "DIV")
         self.assertEqual(token.value, "/")
+
+    def test_token_number_sign(self):
+        token = sslexer.tokenize_data(data="#")[0]
+        self.assertEqual(token.type, "NUMBER_SIGN")
+        self.assertEqual(token.value, "#")
 
     def test_token_parenthesis(self):
         token = sslexer.tokenize_data(data="(")[0]

@@ -50,6 +50,9 @@ tokens: List[str] = [
                         "COMMA",
                         "DOTDOT",
                         "SQUOTE",
+                        "COLON",
+                        "DOLLAR",
+                        "NUMBER_SIGN",
                         # Math
                         "EQ",
                         "NOTEQ",
@@ -85,6 +88,9 @@ t_RCURLY: str = r"\}"
 t_COMMA: str = r","
 t_DOTDOT: str = r"\.\."
 t_SQUOTE: str = r"\'"
+t_COLON: str = r"\:"
+t_DOLLAR: str = r"\$"
+t_NUMBER_SIGN: str = r"\#"
 # Math
 t_EQ: str = r"="
 t_NOTEQ: str = r"!="
