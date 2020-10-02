@@ -13,6 +13,11 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "ASSIGN")
         self.assertEqual(token.value, ":=")
 
+    def test_token_comma(self):
+        token = sslexer.tokenize_data(data=",")[0]
+        self.assertEqual(token.type, "COMMA")
+        self.assertEqual(token.value, ",")
+
     def test_token_coordinate_ident(self):
         token = sslexer.tokenize_data(data="CL123")[0]
         self.assertEqual(token.type, "COORDINATE_IDENT")

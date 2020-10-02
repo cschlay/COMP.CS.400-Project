@@ -46,6 +46,8 @@ tokens: List[str] = [
                         "RSQUARE",
                         "LCURLY",
                         "RCURLY",
+                        # Characters
+                        "COMMA",
                         # Math
                         "EQ",
                         "NOTEQ",
@@ -77,6 +79,8 @@ t_LSQUARE: str = r"\["
 t_RSQUARE: str = r"\]"
 t_LCURLY: str = r"\{"
 t_RCURLY: str = r"\}"
+# Characters
+t_COMMA: str = r","
 # Math
 t_EQ: str = r"="
 t_NOTEQ: str = r"!="
