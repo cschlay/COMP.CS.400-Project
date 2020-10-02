@@ -1,1 +1,12 @@
-test
+...A non-sensical SheetScript test program of index funds...
+...We do not anything about the grammar so we can just write whatever as test program...
+...This example is Python-like...
+
+function Update_index_fund(id):
+    index_fund := Fetch_index_fund(id)
+    index_fund[value] := index_fund[value] * 1.1
+
+    if 3 >= 1:
+        Post_data({'valueToday': 180})
+    endif
+end
