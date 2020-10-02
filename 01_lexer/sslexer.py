@@ -90,7 +90,15 @@ t_MULT: str = r"\*"
 t_DIV: str = r"/"
 # The long tokens
 t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
-t_COORDINATE_IDENT: str = r"[A-Z]{1,2}[0-9]{1,3}"  # 1-2 capital letters and 1-3 digits
+
+
+# 1-2 capital letters and 1-3 digits
+# Placed above t_IDENT to increase the precedence.
+def t_COORDINATE_IDENT(t):
+    r"[A-Z]{1,2}[0-9]{1,3}"
+    return t
+
+
 t_DECIMAL_LITERAL: str = r"(0\.0)|(-?[0-9^0]+\.[0-9]{1})"  # only one decimal
 t_INT_LITERAL: str = r"0|-?[0-9^0]+"  # integers in traditional sense
 

@@ -27,6 +27,11 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "COORDINATE_IDENT")
         self.assertEqual(token.value, "C1")
 
+        token = sslexer.tokenize_data(data="AB1")[0]
+        self.assertEqual(token.type, "COORDINATE_IDENT")
+        self.assertEqual(token.value, "AB1")
+
+
     def test_token_curly_brackets(self):
         token = sslexer.tokenize_data(data="{")[0]
         self.assertEqual(token.type, "LCURLY")
