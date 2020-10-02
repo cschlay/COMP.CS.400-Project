@@ -48,6 +48,7 @@ tokens: List[str] = [
                         "RCURLY",
                         # Characters
                         "COMMA",
+                        "DOTDOT",
                         # Math
                         "EQ",
                         "NOTEQ",
@@ -81,6 +82,7 @@ t_LCURLY: str = r"\{"
 t_RCURLY: str = r"\}"
 # Characters
 t_COMMA: str = r","
+t_DOTDOT: str = r"\.\."
 # Math
 t_EQ: str = r"="
 t_NOTEQ: str = r"!="

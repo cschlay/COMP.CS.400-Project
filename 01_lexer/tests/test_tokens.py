@@ -61,6 +61,11 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "DECIMAL_LITERAL")
         self.assertEqual(token.value, "0.0")
 
+    def test_token_dotdot(self):
+        token = sslexer.tokenize_data(data="..")[0]
+        self.assertEqual(token.type, "DOTDOT")
+        self.assertEqual(token.value, "..")
+
     def test_token_equalities(self):
         token = sslexer.tokenize_data(data="=")[0]
         self.assertEqual(token.type, "EQ")
