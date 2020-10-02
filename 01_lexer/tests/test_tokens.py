@@ -192,6 +192,11 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "RSQUARE")
         self.assertEqual(token.value, "]")
 
+    def test_token_squote(self):
+        token = sslexer.tokenize_data(data="'")[0]
+        self.assertEqual(token.type, "SQUOTE")
+        self.assertEqual(token.value, "'")
+
     def test_reserved_keywords(self):
         for keyword, token_type in sslexer.reserved.items():
             token = sslexer.tokenize_data(data=keyword)[0]
