@@ -150,7 +150,29 @@ def t_IDENT(t):
     return t
 ```
 
+If any other token specification may conflict with keywords they will be
+need to be defined as function and the type checked as above.
+
 ### b. Comments
+
+The comment are defined as ignored token, the ignore prefix is PLY definition
+for the token to be ignored so it won't show up in token list.
+
+```
+t_ignore_COMMENT: str = r"\.\.\..*\.\.\."
+```
+
+In regular expression dot `.` has specified use case so it needs
+to be defined to be taken as dot character `\.`.
+
+The dot `.` in the middle is to defined that anything except newlines 
+can be in comment. The asterisk `*` after dot `.` (`.*`) means that any number
+of characters except newline is valid for regular expression.
+
+So the definition is that between three dots any combination of characters except newline is
+matches.
+
+
 
 ### c. Whitespaces
 
@@ -242,3 +264,17 @@ Not yet.
 I think this phase was quite mechanical and the code should be 
 mostly similar to PLY documentation.
 There wasn't much room for creativity.
+
+After some tests and writing README, I think I naively trusted the documentation's example on how
+to define tokens and just hardcoded the token names.
+A small change that would be make testing and referring to tokens is
+always define token as "constant" so that it can be referred with `sslexer.TOKEN_IDENT`.
+
+```
+# sslexer.py
+
+TOKEN_IDENT: Final[str] = "IDENT"
+tokens: List[str] = [TOKEN_IDENT]
+```
+
+The implementation might need changes for other phases.
