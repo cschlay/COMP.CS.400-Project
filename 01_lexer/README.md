@@ -455,9 +455,18 @@ Not yet.
 
 ## 6. Thoughts
 
-I think this phase was quite mechanical and the code should be 
-mostly similar to PLY documentation.
+I think this phase was quite mechanical and the code should be  mostly similar to PLY documentation.
 There wasn't much room for creativity.
+I also think PLY is so compact that most of the functions and statements were just 1-3 three lines, that the largest
+block that is not token list in `main.py` that handled the `CLI` operations.
+ 
+I think coming up with regular expressions was surprisingly easy.
+At first I struggled with quantities and defining `DECIMAL_LITERAL` and `INT_LITERAL`.
+The other directory issue (still not solved) was how to run tests that would read file and run both from terminal
+and PyCharm.
+
+I only got stuck with function definitions because I attempted to write "high-quality" code and 
+wrote docstring comment to them and it never evaluated the regular expression below it.
 
 After some tests and writing README, I think I naively trusted the documentation's example on how
 to define tokens and just hardcoded the token names.
@@ -472,3 +481,7 @@ tokens: List[str] = [TOKEN_IDENT]
 ```
 
 The implementation might need changes for other phases.
+
+I was not familiar with using PLY but the assignment gave me knowledge at least the basic of PLY and token definition.
+I already knew regular expressions, but I wasn't comfortable with using them.
+I am now better with them.
