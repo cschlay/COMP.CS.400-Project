@@ -7,6 +7,12 @@ The unittest can be run in this directory with
 python -m unittest
 ```
 
+To run any code:
+
+```
+python main.py -f FILENAME
+```
+
 ## 1. Lexical analysis
 
 Lexical analysis creates tokens from source code.
@@ -435,7 +441,7 @@ The dot `.` and required one digit in regex is what truly distinguishes them.
 
 ```
 DECIMAL: r"(-?0\.[0-9]{1})|(-?[1-9]{1}[0-9]*\.[0-9]{1})"
-INT: r"0|-?[1-9]{1}[0-9]+"
+INT: r"0|-?[1-9]{1}[0-9]*"
 ```
 
 Because of them is defined as regex the decimal is longer should get matched first
