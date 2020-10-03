@@ -386,8 +386,11 @@ t_GT: str = r">"
 t_GTEQ: str = r">="
 ```
 
-However, I have preserved the order given in the instructions.
-This turns to be possible because PLY sorts the longest regex to be matched first according to documentation 4.3.
+I have preserved the order given in the instructions.
+This turns to be possible because PLY sorts the longest regex to be matched first according to documentation section 
+4.3., if they are not defined as functions.
+
+The same rule applies to other similar tokens such as `LT` and `LTE`.
 
 ### d. String literals and variable names
 
