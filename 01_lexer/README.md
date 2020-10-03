@@ -94,7 +94,7 @@ t.type = reserved.get("keyword", "TOKEN_TYPE_TO_VALIDATE")
 This is not specific to PLY, but the easiest way to validate because
 `.get` function in Python  attempts to find the token type in reserved dict and if it doesn't find
 then the token is not a keyword and thus the type is the default given as second argument.
-The lexer doesn't know about types so the token definition itself doesn't define its type
+The lexer doesn't know about types so the token definition itself does not define its type
 so it can be changed.
 
 ### PLY Processing
@@ -312,7 +312,7 @@ def t_IDENT(t):
 ```
 
 The ident is also defined as function but it need to check for conflicts with keywords (described above)
-because it allows all characters to be lowercased.
+because it allows all characters to be lowercase.
 It has the parts of
 
 - `[a-z]{1}`, one lowercase letter from a-z
