@@ -172,9 +172,19 @@ of characters except newline is valid for regular expression.
 So the definition is that between three dots any combination of characters except newline is
 matches.
 
-
-
 ### c. Whitespaces
+
+PLY has a special definition for ignored characters `t_ignore`.
+It is a string of characters we want to ignore.
+
+In the assignment we needed every whitespace to be excluded
+so it is done by adding space ` ` to the string.
+
+In addition to that the `\r` character needed to be ignored so the final definition is:
+
+```
+t_ignore: str = " \r"
+```
 
 ### d. Operators & delimiters
 
