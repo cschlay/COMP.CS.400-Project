@@ -216,7 +216,19 @@ The second regex `-?[1-9]{1}[0-9]*\.[0-9]{1}`:
 
 ### f. String literals
 
-### g. Functional names
+### g. Function names
+
+```
+t_FUNC_IDENT: str = r"[A-Z]{1}[0-9a-z_]+"
+```
+
+The function name has the following parts:
+
+- `[A-Z]{1}`, one upper case letter between A-Z alphabets
+- `[0-9a-z_]+`, at least one number from 0-9 or letter between a-z or `_`, this disallow one character function names
+
+The above the first require one character and the other at least one so the min length is 2.
+
 
 ## 4. Distinguishing elements
 
