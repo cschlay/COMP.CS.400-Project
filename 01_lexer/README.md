@@ -356,6 +356,8 @@ Function: r"[A-Z]{1}[0-9a-z_]+"
 Variable: r"[a-z]{1}[0-9A-Za-z_]+"
 ```
 
+The relevant parts are `[A-Z]{1}` and `[a-z]{1}`.
+
 ### b. Keywords & variable names
 
 Keywords are checked after variable is matched.
