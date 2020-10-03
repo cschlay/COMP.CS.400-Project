@@ -177,7 +177,7 @@ matches.
 PLY has a special definition for ignored characters `t_ignore`.
 It is a string of characters we want to ignore.
 
-In the assignment we needed every whitespace to be excluded
+In the assignment we needed whitespace to be excluded
 so it is done by adding space ` ` to the string.
 
 In addition to that the `\r` character needed to be ignored so the final definition is:
@@ -189,6 +189,30 @@ t_ignore: str = " \r"
 ### d. Operators & delimiters
 
 ### e. Decimal literals
+
+The decimal literal is defined as follows:
+
+```
+t_DECIMAL_LITERAL: str =  r"(-?0\.[0-9]{1})|(-?[1-9]{1}[0-9]*\.[0-9]{1})"
+```
+
+The definition uses two regular expressions separated by `|` and grouped by parentheses the first
+defines the range of -0.9 to 0.9. The other numbers are defined in the latter.
+This is required because a single definition would allow `000000.0` to be decimals.
+
+The first regex `-?0\.[0-9]{1}` has the following parts:
+
+- `-?`, zero or one minus `-`
+- `\.`, the literal dot between the numbers
+- `[0-9]{1}`, one of the numbers between 0 and 9 
+
+The second regex `-?[1-9]{1}[0-9]*\.[0-9]{1}`:
+
+- `-?` zero or one minus `-`
+- `[1-9]{1}`, one from 1-9 because zero range is handled in the first regex 
+- `[0-9]*`, none or more numbers from 0-9 this allows numbers greater than 10
+- `\.`, the literal dot between the numbers
+- `[0-9]{1}`, one of the numbers 0-9 as the decimal
 
 ### f. String literals
 
