@@ -361,8 +361,21 @@ The relevant parts are `[A-Z]{1}` and `[a-z]{1}`.
 ### b. Keywords & variable names
 
 Keywords are checked after variable is matched.
-If after the pattern matches the value is same as a keywordd then the type is changed to keywords.
+If after the pattern matches the value is same as a keyword then the type is changed to keywords.
 This is done by checking if it is in `reserved` variable, which is a dict of reserved keywords.
+
+Simply put, we define the all variable tokens that may conflict with keywords, those that can 
+be all lower case by using the structure of
+
+```
+def t_TOKEN_NAME(t):
+    r"" # <- PATTERN HERE
+    ... # other operations
+    t.type = reserved.get(t.value, "TOKEN_NAME")
+    return t
+```
+
+With the current information about SheetScript, only `IDENT` may conflict.
 
 ### c. Operators > and >=
 
