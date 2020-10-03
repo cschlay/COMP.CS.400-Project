@@ -113,7 +113,7 @@ def t_COORDINATE_IDENT(t):
     return t
 
 
-t_DECIMAL_LITERAL: str = r"(0\.0)|(-?[0-9^0]+\.[0-9]{1})"  # only one decimal
+t_DECIMAL_LITERAL: str = r"(0\.[0-9]{1})|(-?[0-9]?[0-9]*\.[0-9]{1})"  # only one decimal
 t_INT_LITERAL: str = r"0|-?[0-9^0]+"  # integers in traditional sense
 
 

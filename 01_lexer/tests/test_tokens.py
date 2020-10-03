@@ -61,6 +61,11 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "DECIMAL_LITERAL")
         self.assertEqual(token.value, "0.0")
 
+        # Between zero and one
+        token = sslexer.tokenize_data(data="0.1")[0]
+        self.assertEqual(token.type, "DECIMAL_LITERAL")
+        self.assertEqual(token.value, "0.1")
+
     def test_token_colon(self):
         token = sslexer.tokenize_data(data=":")[0]
         self.assertEqual(token.type, "COLON")
