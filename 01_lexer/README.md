@@ -13,9 +13,10 @@ Lexical analysis creates tokens from source code.
 The program used for analysis doesn't know anything about how the code is used.
 It only knows the keywords and token structures and attempts to find them.
 
-When all text in the source can be matched to a token.
-The tokens in other compilation steps will be further processed such as
-checking that the tokens appear in proper order e.g. not performing addition of integer and string.
+When all text in the source can be matched to a token, the other phases can process the tokens.
+The tokens in other compilation steps will be further processed them such as
+checking that the tokens appear in proper order e.g. not performing addition of integer and string or group the code 
+based on parenthesis.
 
 Running lexical analysis before further processing makes it easier to access each
 token and not needing to check that they are correct later. It also prevents unnecessary compilation steps
@@ -26,7 +27,7 @@ when the most trivial errors in e.g. keyword typos are found in the first step.
 ### Defining tokens
 
 To use PLY tool we need to define a list or tuple of token names.
-They are UPPERCASE strings  that we use to identify the "categor" they belong to.
+They are UPPERCASE strings  that we use to identify the "category" they belong to.
 It has to be declared as module-level variable named `tokens`.
 
 ```
@@ -49,10 +50,11 @@ The tokens can be defined as functions too but it has to strictly follow the str
 def t_INT(t):
     r"-?[0-9]+"
     # Do someting else like changing types or or values.
+    # Or customize the validation
     return t
 ```
 
-The first line function need to be regular expression!
+The first line function need to be regular expression, so docstring do not work!
 
 
 ### Defining keywords
@@ -123,13 +125,22 @@ def t_newline(t):
 
 
 lexer: ply.lex.Lexer = ply.lex.lex()
-lexer.input(data)
-for token in lexer:
-    ...
+
+# I think it is better to put these as function
+# So that functions can be given as arguments to do something with token or 
+# return the list for further observations.
+def tokenize_data(data: str) ->  List[ply.lex.LexToken]:
+    lexer.input(data)
+    for token in lexer:
+        ...
 ```
 
 Enforcing the naming conventions and having minimal parts for other
 functionality makes lexical analysis programs mostly same.
+
+It should noted that the lexer can be fed data with `input()` after it has been already 
+have some data. It seems that after the iteration we cannot iterate it again.
+We can get it as list of tokens and process the list later with `list(lexer)`.
 
 ## 3. Code Explanation
 
