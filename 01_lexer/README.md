@@ -423,7 +423,10 @@ This is resolved by defining the token as function and putting the `COORDINATE_I
 
 ### e. Comments and other code
 
-
+The definition of comments forced the three dots `...` to be comments
+and it is ignored so it should never get tokenized. (see 3.b. ).
+Even if we have code inside comment block I think it still gets ignored because 
+when it finds the dots the pattern should only match the comment token.
 
 ### f. Integer literals and decimal literals
 
