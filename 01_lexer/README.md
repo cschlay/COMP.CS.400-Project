@@ -1,6 +1,11 @@
 # Document for Phase 1
 
 This is the attachment document to be submitted for phase 1 of course project.
+The unittest can be run in this directory with
+
+```
+python -m unittest
+```
 
 ## 1. Lexical analysis
 

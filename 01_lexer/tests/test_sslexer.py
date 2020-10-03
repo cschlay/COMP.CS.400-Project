@@ -51,7 +51,7 @@ class SSLexerTest(TestCase):
             ("ENDIF", "endif"),
             ("END", "end")
         ]
-        token_list: List[ply.lex.LexToken] = sslexer.tokenize_data(data=read_file('code.sheetscript'))
+        token_list: List[ply.lex.LexToken] = sslexer.tokenize_data(data=read_file('tests/code.sheetscript'))
         for token, expected in zip(token_list, expected_tokens):
             self.assertEqual(token.type, expected[0], msg=token)
             self.assertEqual(token.value, expected[1], msg=token)

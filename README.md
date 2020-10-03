@@ -7,3 +7,6 @@ Please put all the neccessary code for each submission inside the
 directory specified (even if that means copying files from one 
 directory to another!)
 
+## 1 Lexer
+
+The README is located at `01_lexer/README.md`.
