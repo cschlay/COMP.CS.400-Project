@@ -124,7 +124,7 @@ def t_IDENT(t):
     return t
 
 
-t_RANGE_IDENT: str = r"_{1}[0-9A-Za-z_]+"  # just like IDENT but starts with underscore
+t_RANGE_IDENT: str = r"_[0-9A-Za-z_]+"  # just like IDENT but starts with underscore
 t_SHEET_IDENT: str = r"[A-Z]+"  # capital letter only text
 t_FUNC_IDENT: str = r"[A-Z]{1}[0-9a-z_]+"
 

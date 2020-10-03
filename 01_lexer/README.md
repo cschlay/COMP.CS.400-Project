@@ -260,6 +260,65 @@ The second regex `-?[1-9]{1}[0-9]*\.[0-9]{1}`:
 
 ### f. String literals
 
+Assuming that string literals mean 
+`INFO_STRING`, `COORDINATE_IDENT`, `IDENT`,
+`RANGE_IDENT` and `SHEET_IDENT`.
+
+```
+t_INFO_STRING: str = r"!.*!"
+```
+
+In info string `!` are taken as is so any number of characters `.*` except newline is 
+allowed to be between the `!` character.
+
+```
+def t_COORDINATE_IDENT(t):
+    r"[A-Z]{1,2}[0-9]{1,3}"
+    return t
+```
+
+The coordinate ident had to be defined as function to have precedence (described below).
+The regular expression needed to be in the docstring comment's place
+and it has the parts of
+
+- `[A-Z]{1,2}`,  which requires it to have one or two chars from A-Z.
+- `[0-9]{1,3}`, one, two or three numbers from 0-9
+
+The definition would limit the length of it to 2-5 characters.
+
+
+```
+def t_IDENT(t):
+    r"[a-z]{1}[0-9A-Za-z_]+"
+    t.type = reserved.get(t.value, "IDENT")
+    return t
+```
+
+The ident is also defined as function but it need to check for conflicts with keywords (described above)
+because it allows all characters to be lowercased.
+It has the parts of
+
+- `[a-z]{1}`, one lowercase letter from a-z
+- `[0-9A-Za-z_]+`, at least one character from 0-9, A-Z, a-z or `_`.
+
+This make it to have min length of 2 characters.
+
+```
+t_RANGE_IDENT: str = r"_[0-9A-Za-z_]+"
+```
+
+- `_`, the first character need to be _
+- `[0-9A-Za-z_]+`, at least one character from 0-9, A-Z, a-z or `_`.
+
+The range ident would also have min length of 2 chars.
+
+```
+t_SHEET_IDENT: str = r"[A-Z]+"
+```
+
+This is obvious that at least one character from A-Z.
+
+
 ### g. Function names
 
 ```

@@ -200,9 +200,17 @@ class TokenTest(TestCase):
         self.assertEqual(token.value, "_1a5s6d4")
 
     def test_token_sheet_ident(self):
-        token = sslexer.tokenize_data(data="OK")[0]
+        token = sslexer.tokenize_data(data="A")[0]
         self.assertEqual(token.type, "SHEET_IDENT")
-        self.assertEqual(token.value, "OK")
+        self.assertEqual(token.value, "A")
+
+        token = sslexer.tokenize_data(data="AA")[0]
+        self.assertEqual(token.type, "SHEET_IDENT")
+        self.assertEqual(token.value, "AA")
+
+        token = sslexer.tokenize_data(data="AAA")[0]
+        self.assertEqual(token.type, "SHEET_IDENT")
+        self.assertEqual(token.value, "AAA")
 
     def test_token_square_brackets(self):
         token = sslexer.tokenize_data(data="[")[0]
