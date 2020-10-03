@@ -206,7 +206,15 @@ SHEET_IDENT: r"[A-Z]{1}[0-9a-z_]+"
 I defined that there must be one of the characters in the begging that are from
 different set of characters so this distinguishes them.
 
+As it is mentioned in the instructions that `COORDINATE_IDENT` and `IDENT`
+may conflict.
+This is resolved by defining the token as function and putting the `COORDINATE_IDENT` above the
+`IDENT` definition. This should make it to take over in priority according to 4.3. in the PLY docs.
+
+
 ### e. Comments and other code
+
+
 
 ### f. Integer literals and decimal literals
 
