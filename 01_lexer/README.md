@@ -394,7 +394,7 @@ The same rule applies to other similar tokens such as `LT` and `LTE`.
 
 ### d. String literals and variable names
 
-The string literals has distinguishable defitinitions compared to variable names.
+The string literals has distinguishable definitions compared to variable names.
 Variables `IDENT` had to start with lowercase letter.
 `INFO_STRING` has exclamation marks `!`, `RANGE_IDENT` has underscore `_` as first character
 and `SHEET_IDENT` starts with uppercase letter.
@@ -404,9 +404,13 @@ Thus, using regex for the first characters makes them different.
 ```
 IDENT: r"[a-z]{1}[0-9A-Za-z_]+"
 INFO_STRING: r"!.*!"
-RANGE_IDENT: r"_{1}[0-9A-Za-z_]+"
+RANGE_IDENT: r"_[0-9A-Za-z_]+"
 SHEET_IDENT: r"[A-Z]{1}[0-9a-z_]+"
 ```
+
+To repeat the parts in the beginning are different: `[a-z]{1}`, `!`, `_`, and `[A-Z]{1}`.
+As there are quantifiers (one) first  and exact first characters they should never
+allow strings that conflict.
 
 I defined that there must be one of the characters in the begging that are from
 different set of characters so this distinguishes them.
