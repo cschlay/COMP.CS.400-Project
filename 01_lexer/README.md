@@ -434,11 +434,14 @@ As in GT and GTE literals the sorted lengths of regex differentiates the decimal
 The dot `.` and required one digit in regex is what truly distinguishes them.
 
 ```
-DECIMAL: r"(0\.0)|(-?[0-9^0]+\.[0-9]{1})"
-INT: r"0|-?[0-9^0]+"
+DECIMAL: r"(-?0\.[0-9]{1})|(-?[1-9]{1}[0-9]*\.[0-9]{1})"
+INT: r"0|-?[1-9]{1}[0-9]+"
 ```
-The or condition for zero values and exclusion of 0 is required because 
-otherwise it accepts `000000.0` and `00000` for decimals and integers.
+
+Because of them is defined as regex the decimal is longer should get matched first
+so if we have `0.1` it shouldn't match the `0` as int and the other not being able to get matched.
+
+
 
 ## 5. Extras
 

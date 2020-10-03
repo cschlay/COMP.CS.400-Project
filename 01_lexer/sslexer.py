@@ -114,7 +114,7 @@ def t_COORDINATE_IDENT(t):
 
 
 t_DECIMAL_LITERAL: str = r"(-?0\.[0-9]{1})|(-?[1-9]{1}[0-9]*\.[0-9]{1})"  # only one decimal
-t_INT_LITERAL: str = r"0|-?[0-9^0]+"  # integers in traditional sense
+t_INT_LITERAL: str = r"0|-?[1-9]{1}[0-9]+"  # integers in traditional sense
 
 
 # Variable name definition. The length has to be at least one and not a reserved word.

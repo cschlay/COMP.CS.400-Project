@@ -160,8 +160,9 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "INT_LITERAL")
         self.assertEqual(token.value, "0")
 
-        tokens = sslexer.tokenize_data(data="0000")
-        self.assertEqual(len(tokens), 4)
+        token = sslexer.tokenize_data(data="1000")[0]
+        self.assertEqual(token.type, "INT_LITERAL")
+        self.assertEqual(token.value, "1000")
 
     def test_token_math(self):
         # Tests only math operators.
