@@ -188,6 +188,50 @@ t_ignore: str = " \r"
 
 ### d. Operators & delimiters
 
+This section explains operators and delimiters as groups because they are defined similarly.
+
+The operators:
+
+```
+t_EQ: str = r"="
+t_NOTEQ: str = r"!="
+t_LT: str = r"<"
+t_LTEQ: str = r"<="
+t_GT: str = r">"
+t_GTEQ: str = r">="
+t_PLUS: str = r"\+"
+t_MINUS: str = r"-"
+t_MULT: str = r"\*"
+t_DIV: str = r"/"
+```
+
+Almost all operators can be defined to be matched exactly,
+there is no need to add quantifier because they don't take from a set of characters.
+The exceptions are `\+` and `\*`, which have meaning in regular expressions so they need the backslash.
+
+And delimiters:
+
+```
+t_LPAREN: str = r"\("
+t_RPAREN: str = r"\)"
+t_LSQUARE: str = r"\["
+t_RSQUARE: str = r"\]"
+t_LCURLY: str = r"\{"
+t_RCURLY: str = r"\}"
+t_COMMA: str = r","
+t_DOTDOT: str = r"\.\."
+t_SQUOTE: str = r"\'"
+t_COLON: str = r"\:"
+t_DOLLAR: str = r"\$"
+t_NUMBER_SIGN: str = r"\#"
+```
+
+The same exact definitions apply to delimiters.
+
+They do not have meaning at the moment, however when
+they are part of some other token the other would the
+precedence over these because they have longer definitions.
+
 ### e. Decimal literals
 
 The decimal literal is defined as follows:
