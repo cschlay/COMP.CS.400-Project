@@ -485,3 +485,6 @@ The implementation might need changes for other phases.
 I was not familiar with using PLY but the assignment gave me knowledge at least the basic of PLY and token definition.
 I already knew regular expressions, but I wasn't comfortable with using them.
 I am now better with them.
+
+I also purposely avoided the short notations such as `\d` for numbers and others because
+it would make it hard for others to read 

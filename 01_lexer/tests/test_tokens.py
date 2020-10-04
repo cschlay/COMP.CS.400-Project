@@ -147,6 +147,10 @@ class TokenTest(TestCase):
         self.assertEqual(token.type, "INFO_STRING")
         self.assertEqual(token.value, "!infostring!")
 
+        token = sslexer.tokenize_data(data="!with spaces!")[0]
+        self.assertEqual(token.type, "INFO_STRING")
+        self.assertEqual(token.value, "!with spaces!")
+
     def test_token_int_literal(self):
         token = sslexer.tokenize_data(data="1234")[0]
         self.assertEqual(token.type, "INT_LITERAL")
