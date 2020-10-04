@@ -32,7 +32,7 @@ when the most trivial errors in e.g. keyword typos are found in the first step.
 
 ### Defining tokens
 
-To use PLY tool we need to define a list or tuple of token names.
+To use PLY tool, we need to define a list or tuple of token names.
 They are UPPERCASE strings  that we use to identify the "category" they belong to.
 It has to be declared as module-level variable named `tokens`.
 
@@ -70,7 +70,7 @@ meaning in the language that user shouldn't use as variables.
 Those are also defined as tokens but according to PLY documentation, they
 should be defined as dictionary because it improves efficiency.
 
-The documentation has recommends using the structure of
+The documentation recommends using the structure of
 
 ```
 reserved: Dict[str, str] = {
@@ -79,7 +79,7 @@ reserved: Dict[str, str] = {
 ```
 
 Although the keyword is identical but uppercase it may vary and 
-such as being case sensitive the string token need to be different and unique.
+such as being case-sensitive the string token need to be different and unique.
 The uppercase part need to be appended to tokens list. 
 Python has convenient function `Dict.values` which can just be called.
 
@@ -135,7 +135,7 @@ lexer: ply.lex.Lexer = ply.lex.lex()
 # I think it is better to put these as function
 # So that functions can be given as arguments to do something with token or 
 # return the list for further observations.
-def tokenize_data(data: str) ->  List[ply.lex.LexToken]:
+def tokenize_data(data: str):
     lexer.input(data)
     for token in lexer:
         ...
@@ -144,7 +144,7 @@ def tokenize_data(data: str) ->  List[ply.lex.LexToken]:
 Enforcing the naming conventions and having minimal parts for other
 functionality makes lexical analysis programs mostly same.
 
-It should noted that the lexer can be fed data with `input()` after it has been already 
+It should noted that the lexer can be fed data with `input()` after it already 
 have some data. It seems that after the iteration we cannot iterate it again.
 We can get it as list of tokens and process the list later with `list(lexer)`.
 
@@ -156,7 +156,7 @@ They are done as PLY documentation recommended in section 4.3.
 
 They are defined as dictionary.
 Every token that can be lowercase only is defined as function and the
-type is changed to keywords type if it is found in the dictionary. 
+type is changed to "keyword" if it is found in the dictionary.
 
 E.g. `IDENT` can be all lowercase so it is defined as
 
@@ -172,8 +172,8 @@ need to be defined as function and the type checked as above.
 
 ### b. Comments
 
-The comment are defined as ignored token, the ignore prefix is PLY definition
-for the token to be ignored so it won't show up in token list.
+The comments are defined as ignored token, the ignore prefix is PLY definition
+for the token to be ignored so that it won't show up in token list.
 
 ```
 t_ignore_COMMENT: str = r"\.\.\..*\.\.\."
@@ -182,7 +182,7 @@ t_ignore_COMMENT: str = r"\.\.\..*\.\.\."
 In regular expression dot `.` has specified use case so it needs
 to be defined to be taken as dot character `\.`.
 
-The dot `.` in the middle is to defined that anything except newlines 
+The dot `.` in the middle is to defined that anything except newlines `\n`
 can be in comment. The asterisk `*` after dot `.` (`.*`) means that any number
 of characters except newline is valid for regular expression.
 
@@ -194,7 +194,7 @@ matches.
 PLY has a special definition for ignored characters `t_ignore`.
 It is a string of characters we want to ignore.
 
-In the assignment we needed whitespace to be excluded
+In the assignment we needed whitespaces to be excluded
 so it is done by adding space ` ` to the string.
 
 In addition to that the `\r` character needed to be ignored so the final definition is:
@@ -414,7 +414,7 @@ RANGE_IDENT: r"_[0-9A-Za-z_]+"
 SHEET_IDENT: r"[A-Z]{1}[0-9a-z_]+"
 ```
 
-To repeat the parts in the beginning are different: `[a-z]{1}`, `!`, `_`, and `[A-Z]{1}`.
+To repeat, the parts in the beginning are different: `[a-z]{1}`, `!`, `_`, and `[A-Z]{1}`.
 As there are quantifiers (one) first  and exact first characters they should never
 allow strings that conflict.
 
@@ -470,7 +470,7 @@ wrote docstring comment to them and it never evaluated the regular expression be
 
 After some tests and writing README, I think I naively trusted the documentation's example on how
 to define tokens and just hardcoded the token names.
-A small change that would be make testing and referring to tokens is
+A small change that would make testing and referring to tokens is to
 always define token as "constant" so that it can be referred with `sslexer.TOKEN_IDENT`.
 
 ```
