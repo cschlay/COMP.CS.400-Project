@@ -8,6 +8,7 @@ from typing import List
 import ply.yacc
 
 import sslexer
+from sssyntax import ScalarDefinition
 
 tokens: List[str] = sslexer.tokens
 
@@ -16,7 +17,8 @@ P = [ply.yacc.YaccProduction]
 
 
 def p_program(p: P):
-    """program : function_or_variable_definition statement_list"""
+    """program : function_or_variable_definition statement_list
+               | function_or_variable_definition"""
     # TODO: {function_or_variable_definition}
     pass
 
@@ -33,8 +35,11 @@ def p_variable_definition(p: P):
                            | range_definition
                            | sheet_definition
     """
-    # TODO: Change to proper printing.
-    print(f"variable_definition({p[1]})")
+    p[0] = p[1]
+    print_value: str = ''
+    if type(p[0]) is ScalarDefinition:
+        print_value = f"{p[0].name}:scalar"
+    print(f"variable_definition({print_value})")
 
 
 # p_function_definition
@@ -79,7 +84,10 @@ def p_range_definition(p: P):
 def p_scalar_definition(p: P):
     """scalar_definition : SCALAR IDENT EQ scalar_expr
                          | SCALAR IDENT"""
-    pass
+    if len(p) == 3:
+        p[0] = ScalarDefinition(name=p[2], value=None)
+    if len(p) == 4:
+        p[0] = ScalarDefinition(name=p[2], value=p[3])
 
 
 def p_statement_list(p: P):
@@ -143,7 +151,7 @@ def p_cell_ref(p: P):
                 | DOLLAR COLON RANGE_IDENT
                 | DOLLAR
     """
-    print(p[1])
+    print(p[0])
 
 
 def p_scalar_expr(p: P):

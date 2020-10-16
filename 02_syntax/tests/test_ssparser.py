@@ -4,8 +4,22 @@ import ssparser
 
 
 class SSParserTest(TestCase):
-    def test_statement(self):
-        # PRINT_SHEET SHEET_IDENT
-        ssparser.parse_data(data='print_sheet A')
-        # PRINT_SHEET [INFO_STRING] SHEET_IDENT
-        ssparser.parse_data(data='print_sheet !batman! BAT')
+    """
+    It seems like it is is too hard to test individual definition.
+    So only test the top level ones.
+    """
+
+    def test_scalar_definition(self):
+        # SCALAR IDENT
+        ssparser.parse_data(data="scalar testy")
+
+        # SCALAR IDENT EQ scalar_expr
+
+
+    def test_range_definition(self):
+        # Range definition
+        pass
+
+    def test_sheet_definition(self):
+        # Sheet definition
+        pass
