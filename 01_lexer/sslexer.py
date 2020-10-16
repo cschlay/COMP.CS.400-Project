@@ -14,6 +14,7 @@ import ply.lex
 # The docs showed an example of using dict but it might be simpler to just use list and map it if necessary.
 # I have preserved the order given in the instructions in case the order matter later.
 reserved_keywords: List[str] = [
+    "sheet",
     "scalar",
     "range",
     "do",
