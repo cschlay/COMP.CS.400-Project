@@ -41,6 +41,17 @@ class RangeDefinition:
         self.value = value
 
 
+class RangeExpression:
+    def __init__(self, range_ident=None, cell1=None, cell2=None, range_expression=None, int_range1=None,
+                 int_range2=None):
+        self.range_ident = None
+        self.cell1 = None
+        self.cell2 = None
+        self.range_expression = None
+        self.int_range1 = None,
+        self.int_range2 = None
+
+
 class ScalarDefinition:
     def __init__(self, name: str, value: str = None):
         self.name = name
@@ -48,7 +59,7 @@ class ScalarDefinition:
 
 
 class SimpleExpression:
-    def __init__(self, value, op: str=None, other_value=None):
+    def __init__(self, value, op: str = None, other_value=None):
         self.value = value
         self.op = op
         self.other_value = other_value

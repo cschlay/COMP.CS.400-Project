@@ -235,7 +235,14 @@ def p_range_expr(p: P):
                   | RANGE cell_ref DOTDOT cell_ref
                   | range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE"""
     # TODO: LSQUARE function_call RSQUARE
-    pass
+    length: int = len(p)
+    if length == 2:
+        # RANGE_IDENT, should be a reference
+        p[0] = nodes.RangeExpression(range_ident=p[1])
+    elif length == 5:
+        p[0] = nodes.RangeExpression(cell1=p[2], cell2=p[4])
+    elif length == 6:
+        p[0] = nodes.RangeExpression(range_expression=p[1], int_range1=p[3], int_range2=p[5])
 
 
 def p_cell_ref(p: P):
