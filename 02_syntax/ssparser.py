@@ -127,25 +127,36 @@ def p_sheet_row(p: P):
 def p_range_definition(p: P):
     """range_definition : RANGE RANGE_IDENT EQ range_expr
                         | RANGE RANGE_IDENT"""
-    if len(p) == 3:
-        p[0] = nodes.RangeDefinition(name=p[2])
-    elif len(p) == 5:
+    if len(p) == 5:
+        # RANGE RANGE_IDENT EQ range_expr
         p[0] = nodes.RangeDefinition(name=p[2], value=p[4])
+    elif len(p) == 3:
+        # RANGE RANGE_IDENT
+        p[0] = nodes.RangeDefinition(name=p[2])
 
 
 def p_scalar_definition(p: P):
     """scalar_definition : SCALAR IDENT EQ scalar_expr
                          | SCALAR IDENT"""
-    if len(p) == 3:
-        p[0] = nodes.ScalarDefinition(name=p[2])
-    elif len(p) == 5:
+    if len(p) == 5:
+        # SCALAR IDENT EQ scalar_expr
         p[0] = nodes.ScalarDefinition(name=p[2], value=p[4])
+    elif len(p) == 3:
+        # SCALAR IDENT
+        p[0] = nodes.ScalarDefinition(name=p[2])
 
 
+# Uses Python list
 def p_statement_list(p: P):
-    """statement_list : statement
-                      | statement_list"""
-    pass
+    """statement_list : statement statement_list
+                      | statement"""
+    length: int = len(p)
+    if length == 3:
+        # statement {statement}
+        p[0] = [p[1]] + p[2]
+    else:
+        # statement
+        p[0] = [p[1]]
 
 
 def p_statement(p: P):
