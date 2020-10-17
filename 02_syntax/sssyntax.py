@@ -1,7 +1,7 @@
 """
 A helper to construct the AST.
 """
-from typing import List
+from typing import List, Union
 
 
 class Atom:
@@ -29,6 +29,13 @@ class ScalarDefinition:
         self.value = value
 
 
+class SimpleExpression:
+    def __init__(self, value, op: str=None, other_value=None):
+        self.value = value
+        self.op = op
+        self.other_value = other_value
+
+
 class SheetDefinition:
     def __init__(self, name: str, sheet_init=None):
         self.name = name
@@ -38,7 +45,7 @@ class SheetDefinition:
 
 
 class Term:
-    def __init__(self, value: Factor, op: str = None, other_value: Factor = None):
+    def __init__(self, value, op: str = None, other_value=None):
         self.value = value
         self.op = op
         self.other_value = other_value

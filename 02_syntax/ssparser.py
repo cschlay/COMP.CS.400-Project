@@ -171,15 +171,20 @@ def p_scalar_expr(p: P):
 
 
 def p_simple_expr(p: P):
-    """simple_expr : term"""
-    # TODO: { (PLUS | MINUS) term }
-    pass
+    """simple_expr : term PLUS simple_expr
+                   | term MINUS simple_expr
+                   | term"""
+    if len(p) == 4:
+        p[0] = nodes.SimpleExpression(p[1], op=p[2], other_value=p[3])
+    elif len(p) == 2:
+        p[0] = nodes.SimpleExpression(p[1])
 
 
 def p_term(p: P):
     """term : factor MULT term
             | factor DIV term
             | factor"""
+    print('term')
     if len(p) == 4:
         # factor {(MULT | DIV)} factor
         p[0] = nodes.Term(p[1], op=p[2], other_value=p[3])
