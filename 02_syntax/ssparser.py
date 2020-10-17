@@ -36,12 +36,14 @@ def p_variable_definition(p: P):
                            | sheet_definition
     """
     p[0] = p[1]
-    print_value: str = ''
+    print_type: str = ''
     if type(p[0]) is nodes.ScalarDefinition:
-        print_value = f"{p[0].name}:scalar"
+        print_type = "scalar"
     elif type(p[0]) is nodes.RangeDefinition:
-        print_value = f"{p[0].name}:range"
-    print(f"variable_definition({print_value})")
+        print_type = "range"
+    elif type(p[0]) is nodes.SheetDefinition:
+        print_type = "sheet"
+    print(f"variable_definition({p[0].name}:{print_type})")
 
 
 # p_function_definition
@@ -55,7 +57,10 @@ def p_sheet_definition(p: P):
     """sheet_definition : SHEET SHEET_IDENT sheet_init
                         | SHEET SHEET_IDENT
     """
-    pass
+    if len(p) == 3:
+        p[0] = nodes.SheetDefinition(name=p[2])
+    else:
+        p[0] = nodes.SheetDefinition(name=p[3])
 
 
 def p_sheet_init(p: P):
@@ -190,9 +195,15 @@ def p_atom(p: P):
             | NUMBER_SIGN range_expr
             | LPAREN scalar_expr RPAREN
     """
-    # TODO: function_call
-    print("atom", p[0])
-
+    print('atom')
+    if len(p) == 2:
+        p[0] = nodes.Atom(value=p[1])
+    elif (len(p)) == 3:
+        # NUMBER_SIGN range_expr
+        p[0] = nodes.Atom(value=p[2], has_number_sign=True)
+    elif (len(p)) == 4:
+        # LPAREN scalar_expr RPAREN
+        p[0] = nodes.Atom(value=p[3], has_parenthesis=True)
 
 # p_function_call
 

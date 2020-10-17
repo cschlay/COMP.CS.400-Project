@@ -26,5 +26,17 @@ class SSParserTest(TestCase):
 
 
     def test_sheet_definition(self):
-        # Sheet definition
-        pass
+        # SHEET SHEET_IDENT
+        ssparser.parse_data(data="sheet SH")
+
+        # SHEET SHEET_IDENT sheet_init
+        # SHEET SHEET_IDENT sheet_init EQ sheet_init_list
+        # SHEET SHEET_IDENT sheet_init EQ LRCURLY sheet_row RCURLY
+        # SHEET SHEET_IDENT sheet_init EQ LRCURLY simple_expr RCURLY
+        ssparser.parse_data(data="sheet SHINTROW = {3.0 * 5.0}")
+
+        # SHEET SHEET_IDENT sheet_init EQ LRCURLY simple_expr {COMMA simple_expr} RCURLY
+
+        # SHEET SHEET_IDENT sheet_init EQ INT_LITERAL MULT INT_LITERAL
+        ssparser.parse_data(data="sheet SHINTMULT = 2 * 4")
+
