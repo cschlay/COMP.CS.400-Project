@@ -185,7 +185,13 @@ def p_term(p: P):
 def p_factor(p: P):
     """factor : MINUS atom
               | atom"""
-    pass
+    print('factor')
+    if len(p) == 3:
+        # MINUS atom
+        p[0] = nodes.Factor(p[2], has_minus=True)
+    elif len(p) == 1:
+        # atom
+        p[0] = nodes.Factor(p[1])
 
 
 def p_atom(p: P):
@@ -197,13 +203,14 @@ def p_atom(p: P):
     """
     print('atom')
     if len(p) == 2:
-        p[0] = nodes.Atom(value=p[1])
+        # IDENT, DECIMAL_LITERAL, cell_ref
+        p[0] = nodes.Atom(p[1])
     elif (len(p)) == 3:
         # NUMBER_SIGN range_expr
-        p[0] = nodes.Atom(value=p[2], has_number_sign=True)
+        p[0] = nodes.Atom(p[2], has_number_sign=True)
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
-        p[0] = nodes.Atom(value=p[3], has_parenthesis=True)
+        p[0] = nodes.Atom(p[3], has_parenthesis=True)
 
 # p_function_call
 

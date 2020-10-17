@@ -11,6 +11,12 @@ class Atom:
         self.has_parenthesis = has_parenthesis
 
 
+class Factor:
+    def __init__(self, value: str, has_minus: bool = False):
+        self.value = value
+        self.has_minus = has_minus
+
+
 class RangeDefinition:
     def __init__(self, name: str, value: str = None):
         self.name = name
