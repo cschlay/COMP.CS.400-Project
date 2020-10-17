@@ -77,9 +77,15 @@ def p_sheet_init_list(p: P):
 
 
 def p_sheet_row(p: P):
-    """sheet_row : simple_expr"""
-    # TODO: { COMMA simple_expr }
-    pass
+    """sheet_row : simple_expr COMMA sheet_row
+                 | simple_expr"""
+    length: int = len(p)
+    if length == 5:
+        # simple_expr { COMMA simple_expr }
+        p[0] = nodes.SheetRow(p[1], op=p[2], other_value=p[3])
+    elif length == 2:
+        # simple_expr
+        p[0] = nodes.SheetRow(p[1])
 
 
 def p_range_definition(p: P):
@@ -175,8 +181,10 @@ def p_simple_expr(p: P):
                    | term MINUS simple_expr
                    | term"""
     if len(p) == 4:
+        # term {(PLUS|MINUS)} term
         p[0] = nodes.SimpleExpression(p[1], op=p[2], other_value=p[3])
     elif len(p) == 2:
+        # term
         p[0] = nodes.SimpleExpression(p[1])
 
 

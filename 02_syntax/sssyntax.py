@@ -44,6 +44,13 @@ class SheetDefinition:
         self.sheet_init = sheet_init
 
 
+class SheetRow:
+    def __init__(self, value, op: str = None, other_value=None):
+        self.value = value
+        self.op = op
+        self.other_value = other_value
+
+
 class Term:
     def __init__(self, value, op: str = None, other_value=None):
         self.value = value
