@@ -4,6 +4,12 @@ A helper to construct the AST.
 from typing import List, Union
 
 
+class Program:
+    def __init__(self, functions_and_variables: List = [], statements: List = []):
+        self.functions_and_variables = functions_and_variables
+        self.statements = statements
+
+
 class Atom:
     def __init__(self, value: str, has_number_sign: bool = False, has_parenthesis: bool = False):
         self.value = value

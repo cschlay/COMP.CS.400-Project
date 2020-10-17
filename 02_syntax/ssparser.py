@@ -17,10 +17,24 @@ P = [ply.yacc.YaccProduction]
 
 
 def p_program(p: P):
-    """program : function_or_variable_definition statement_list
+    """program : multiple_function_or_variable_definition statement_list
                | function_or_variable_definition"""
-    # TODO: {function_or_variable_definition}
-    pass
+    # No being sure how this will be used, it remains as dict.
+    p[0] = nodes.Program(functions_and_variables=p[1])
+    if len(p) == 3:
+        p[0].statements = p[2]
+
+
+# Additional definition for multiple function_or_variable_defs, uses lists
+def p_multiple_function_or_variable_definition(p: P):
+    """multiple_function_or_variable_definition : function_or_variable_definition multiple_function_or_variable_definition
+                                                | function_or_variable_definition"""
+    if len(p) == 3:
+        # multiple_function_or_variable_definition function_or_variable_definition
+        p[0] = [p[1]] + p[2]
+    else:
+        # function_or_variable_definition
+        p[0] = [p[1]]
 
 
 def p_function_or_variable_definition(p: P):
