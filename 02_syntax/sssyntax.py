@@ -65,10 +65,8 @@ class SheetInitList:
 
 
 class SheetRow:
-    def __init__(self, value, op: str = None, other_value=None):
+    def __init__(self, value):
         self.value = value
-        self.op = op
-        self.other_value = other_value
 
 
 class Term:

@@ -112,17 +112,16 @@ def p_multiple_sheet_row(p: P):
         return [p[1]]
 
 
-# TODO: change it to use list of expressions.
 def p_sheet_row(p: P):
     """sheet_row : simple_expr COMMA sheet_row
                  | simple_expr"""
     length: int = len(p)
     if length == 5:
         # simple_expr { COMMA simple_expr }
-        p[0] = nodes.SheetRow(p[1], op=p[2], other_value=p[3])
+        p[0] = nodes.SheetRow([p[1]] + p[3].value)
     elif length == 2:
         # simple_expr
-        p[0] = nodes.SheetRow(p[1])
+        p[0] = nodes.SheetRow([p[1]])
 
 
 def p_range_definition(p: P):
