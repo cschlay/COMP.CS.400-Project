@@ -18,8 +18,9 @@ class Atom:
 
 
 class Assignment:
-    def __init__(self):
-        pass
+    def __init__(self, variable, value):
+        self.variable = variable
+        self.value = value
 
 
 class Factor:

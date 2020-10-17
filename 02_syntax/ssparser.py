@@ -226,8 +226,8 @@ def p_assignment(p: P):
                   | cell_ref ASSIGN scalar_expr
                   | RANGE_IDENT ASSIGN range_expr
                   | SHEET_IDENT ASSIGN SHEET_IDENT"""
-    pass
-    # print
+    p[0] = nodes.Assignment(variable=p[1], value=p[3])
+    print(f"assignment({p[1]})")
 
 
 def p_range_expr(p: P):
