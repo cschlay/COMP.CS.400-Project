@@ -35,3 +35,10 @@ class SheetDefinition:
 
         # For unevaluated INT_LITERAL MULT INT_LITERAL
         self.sheet_init = sheet_init
+
+
+class Term:
+    def __init__(self, value: Factor, op: str = None, other_value: Factor = None):
+        self.value = value
+        self.op = op
+        self.other_value = other_value

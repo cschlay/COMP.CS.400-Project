@@ -177,9 +177,15 @@ def p_simple_expr(p: P):
 
 
 def p_term(p: P):
-    """term : factor"""
-    # TODO: { MULT | DIV factor }
-    pass
+    """term : factor MULT term
+            | factor DIV term
+            | factor"""
+    if len(p) == 4:
+        # factor {(MULT | DIV)} factor
+        p[0] = nodes.Term(p[1], op=p[2], other_value=p[3])
+    elif len(p) == 2:
+        # factor
+        p[0] = nodes.Term(p[1])
 
 
 def p_factor(p: P):
@@ -201,6 +207,7 @@ def p_atom(p: P):
             | NUMBER_SIGN range_expr
             | LPAREN scalar_expr RPAREN
     """
+    # TODO: function_call
     print('atom')
     if len(p) == 2:
         # IDENT, DECIMAL_LITERAL, cell_ref
