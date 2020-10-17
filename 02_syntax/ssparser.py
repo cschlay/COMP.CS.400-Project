@@ -49,7 +49,7 @@ def p_variable_definition(p: P):
                            | range_definition
                            | sheet_definition
     """
-    rule_type = type(p[0])
+    rule_type = type(p[1])
     p[0] = nodes.VariableDefinition(p[1])
 
     print_type: str = ''
@@ -59,7 +59,7 @@ def p_variable_definition(p: P):
         print_type = "range"
     elif rule_type is nodes.SheetDefinition:
         print_type = "sheet"
-    print(f"variable_definition({p[0].name}:{print_type})")
+    print(f"variable_definition({p[1].name}:{print_type})")
 
 
 # p_function_definition
