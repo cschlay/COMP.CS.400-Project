@@ -17,6 +17,11 @@ class Atom:
         self.has_parenthesis = has_parenthesis
 
 
+class Assignment:
+    def __init__(self):
+        pass
+
+
 class Factor:
     def __init__(self, value: str, has_minus: bool = False):
         self.value = value
@@ -67,6 +72,41 @@ class SheetInitList:
 class SheetRow:
     def __init__(self, value):
         self.value = value
+
+
+class Statement:
+    # For generic statements such as "assignment".
+    def __init__(self, value):
+        self.value = value
+
+
+class StatementIf:
+    def __init__(self, condition, if_statement_list, else_statement_list=None):
+        self.condition = condition
+        self.if_statement_list = if_statement_list
+        self.else_statement_list = else_statement_list
+
+
+class StatementPrint:
+    def __init__(self, *args):
+        pass
+
+
+class StatementWhile:
+    def __init__(self, condition, statement_list):
+        self.condition = condition
+        self.statement_list = statement_list
+
+
+class StatementFor:
+    def __init__(self, range_list, statement_list):
+        self.range_list = range_list
+        self.statement_list = statement_list
+
+
+class StatementReturn:
+    def __init__(self, expression):
+        self.expression = expression
 
 
 class Term:

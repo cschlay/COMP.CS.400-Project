@@ -174,11 +174,34 @@ def p_statement(p: P):
                  | RETURN range_expr
                  | assignment"""
     # TODO: subroutine_call
-
     statement_name = None
+    length: int = len(p)
+    if p[1] in ['print_sheet', 'print_range', 'print_scalar']:
+        # PRINT_SHEET [INFO_STRING] SHEET_IDENT
+        # PRINT_RANGE [INFO_STRING] range_expr
+        # PRINT_SCALAR [INFO_STRING] scalar_expr
+        p[0] = nodes.StatementPrint(p[1:])
+    elif p[1] == 'if':
+        # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
+        if length == 5:
+            p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4])
+        elif length == 7:
+            # with else
+            p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4], else_statement_list=p[6])
+    elif p[1] == 'while':
+        # WHILE scalar_expr DO statement_list DONE
+        p[0] = nodes.StatementWhile(condition=p[2], statement_list=p[3])
+    elif p[1] == 'for':
+        # FOR range_list DO statement_list DONE
+        p[0] = nodes.StatementFor(range_list=p[1], statement_list=p[2])
+    elif p[1] == 'return':
+        # RETURN scalar_expr
+        # RETURN range_expr
+        p[0] = nodes.StatementReturn(expression=p[2])
+    elif type(p[1]) is nodes.Assignment:
+        # assignment
+        p[0] = nodes.Statement(p[1])
     # TODO: Verify "statement name" from the staff.
-    #if p[1] == 'print_sheet':
-    #     statement_name = 'statement'
     print(f"statement({p[1]})")
 
 
