@@ -34,6 +34,7 @@ class CellRef:
     def __str__(self):
         return self.name
 
+
 class Factor:
     def __init__(self, value: str, has_minus: bool = False):
         self.value = value
@@ -67,6 +68,13 @@ class ScalarDefinition:
     def __init__(self, name: str, value: str = None):
         self.name = name
         self.value = value
+
+
+class ScalarExpression:
+    def __init__(self, value, op: str = None, other_value=None):
+        self.value = value
+        self.op = op
+        self.other_value = other_value
 
 
 class SimpleExpression:

@@ -263,11 +263,26 @@ def p_cell_ref(p: P):
         p[0] = nodes.CellRef(p[1], has_dollar=True)
 
 
-
 def p_scalar_expr(p: P):
-    """scalar_expr : simple_expr"""
-    # TODO: { (EQ|NOTEQ|LT|LTEQ|GT|GTEQ) simple_expr} print
-    pass
+    """scalar_expr : simple_expr scalar_op scalar_expr
+                   | simple_expr"""
+    print("scalar_expr")
+    length: int = len(p)
+    if length == 3:
+        p[0] = nodes.ScalarExpression(p[1], op=p[2], other_value=p[3])
+    elif length == 2:
+        p[0] = nodes.ScalarExpression(p[1])
+
+
+# helper rule for scalar expr
+def p_scalar_op(p: P):
+    """scalar_op : EQ
+                 | NOTEQ
+                 | LT
+                 | LTEQ
+                 | GT
+                 | GTEQ"""
+    p[0] = p[1]
 
 
 def p_simple_expr(p: P):
