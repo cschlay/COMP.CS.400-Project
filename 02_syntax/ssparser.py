@@ -86,8 +86,8 @@ def p_scalar_definition(p: P):
                          | SCALAR IDENT"""
     if len(p) == 3:
         p[0] = ScalarDefinition(name=p[2], value=None)
-    if len(p) == 4:
-        p[0] = ScalarDefinition(name=p[2], value=p[3])
+    if len(p) == 5:
+        p[0] = ScalarDefinition(name=p[2], value=p[4])
 
 
 def p_statement_list(p: P):

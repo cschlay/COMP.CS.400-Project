@@ -14,6 +14,7 @@ class SSParserTest(TestCase):
         ssparser.parse_data(data="scalar testy")
 
         # SCALAR IDENT EQ scalar_expr
+        ssparser.parse_data(data="scalar testyScal = 3.0")
 
 
     def test_range_definition(self):
