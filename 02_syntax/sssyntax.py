@@ -23,6 +23,17 @@ class Assignment:
         self.value = value
 
 
+class CellRef:
+    def __init__(self, name, range_ident=None, sheet_ident=None, coordinate_ident=None, has_dollar=False):
+        self.range_ident = range
+        self.sheet_ident = sheet_ident
+        self.coordinate_ident = coordinate_ident
+        self.has_dollar = has_dollar
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
 class Factor:
     def __init__(self, value: str, has_minus: bool = False):
         self.value = value

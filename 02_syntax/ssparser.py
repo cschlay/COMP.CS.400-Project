@@ -52,7 +52,7 @@ def p_variable_definition(p: P):
     rule_type = type(p[1])
     p[0] = nodes.VariableDefinition(p[1])
 
-    print_type: str = ''
+    print_type: str = ""
     if rule_type is nodes.ScalarDefinition:
         print_type = "scalar"
     elif rule_type is nodes.RangeDefinition:
@@ -176,25 +176,25 @@ def p_statement(p: P):
     # TODO: subroutine_call
     statement_name = None
     length: int = len(p)
-    if p[1] in ['print_sheet', 'print_range', 'print_scalar']:
+    if p[1] in ["print_sheet", "print_range", "print_scalar"]:
         # PRINT_SHEET [INFO_STRING] SHEET_IDENT
         # PRINT_RANGE [INFO_STRING] range_expr
         # PRINT_SCALAR [INFO_STRING] scalar_expr
         p[0] = nodes.StatementPrint(p[1:])
-    elif p[1] == 'if':
+    elif p[1] == "if":
         # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
         if length == 5:
             p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4])
         elif length == 7:
             # with else
             p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4], else_statement_list=p[6])
-    elif p[1] == 'while':
+    elif p[1] == "while":
         # WHILE scalar_expr DO statement_list DONE
         p[0] = nodes.StatementWhile(condition=p[2], statement_list=p[3])
-    elif p[1] == 'for':
+    elif p[1] == "for":
         # FOR range_list DO statement_list DONE
         p[0] = nodes.StatementFor(range_list=p[1], statement_list=p[2])
-    elif p[1] == 'return':
+    elif p[1] == "return":
         # RETURN scalar_expr
         # RETURN range_expr
         p[0] = nodes.StatementReturn(expression=p[2])
@@ -240,8 +240,10 @@ def p_range_expr(p: P):
         # RANGE_IDENT, should be a reference
         p[0] = nodes.RangeExpression(range_ident=p[1])
     elif length == 5:
+        # RANGE cell_ref DOTDOT cell_ref
         p[0] = nodes.RangeExpression(cell1=p[2], cell2=p[4])
     elif length == 6:
+        # range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE
         p[0] = nodes.RangeExpression(range_expression=p[1], int_range1=p[3], int_range2=p[5])
 
 
@@ -250,7 +252,16 @@ def p_cell_ref(p: P):
                 | DOLLAR COLON RANGE_IDENT
                 | DOLLAR
     """
-    print(p[0])
+    length: int = len(p)
+    if length == 3:
+        # SHEET_IDENT SQUOTE COORDINATE_IDENT
+        if p[1] == "$":
+            p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", range_ident=p[3], has_dollar=True)
+        else:
+            p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", sheet_ident=p[1], coordinate_ident=True)
+    elif length == 1:
+        p[0] = nodes.CellRef(p[1], has_dollar=True)
+
 
 
 def p_scalar_expr(p: P):
@@ -275,7 +286,7 @@ def p_term(p: P):
     """term : factor MULT term
             | factor DIV term
             | factor"""
-    print('term')
+    print("term")
     if len(p) == 4:
         # factor {(MULT | DIV)} factor
         p[0] = nodes.Term(p[1], op=p[2], other_value=p[3])
@@ -287,7 +298,7 @@ def p_term(p: P):
 def p_factor(p: P):
     """factor : MINUS atom
               | atom"""
-    print('factor')
+    print("factor")
     if len(p) == 3:
         # MINUS atom
         p[0] = nodes.Factor(p[2], has_minus=True)
@@ -304,7 +315,7 @@ def p_atom(p: P):
             | LPAREN scalar_expr RPAREN
     """
     # TODO: function_call
-    print('atom')
+    print("atom")
     if len(p) == 2:
         # IDENT, DECIMAL_LITERAL, cell_ref
         p[0] = nodes.Atom(p[1])
