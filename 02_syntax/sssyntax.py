@@ -64,11 +64,6 @@ class SheetInit:
         self.value = value
 
 
-class SheetInitList:
-    def __init__(self, value: List):
-        self.value = value
-
-
 class SheetRow:
     def __init__(self, value):
         self.value = value

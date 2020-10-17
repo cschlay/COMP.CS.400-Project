@@ -85,7 +85,7 @@ def p_sheet_init(p: P):
     """sheet_init : EQ sheet_init_list
                   | EQ INT_LITERAL MULT INT_LITERAL
     """
-    if type(p[2]) is nodes.SheetInitList:
+    if type(p[2]) is list:
         # EQ sheet_init_list
         p[0] = nodes.SheetInit(p[2])
     else:
@@ -95,7 +95,7 @@ def p_sheet_init(p: P):
 
 def p_sheet_init_list(p: P):
     """sheet_init_list : LCURLY multiple_sheet_row RCURLY"""
-    p[0] = nodes.SheetInitList(p[2])
+    p[0] = p[2]
 
 
 # additional rule to allow multiple sheet_rows
@@ -106,10 +106,10 @@ def p_multiple_sheet_row(p: P):
     length: int = len(p)
     if length == 3:
         # sheet_row {sheet_row}
-        return [p[1]] + p[2]
+        p[0] = [p[1]] + p[2]
     elif length == 2:
         # sheet_row
-        return [p[1]]
+        p[0] = [p[1]]
 
 
 def p_sheet_row(p: P):
@@ -206,10 +206,15 @@ def p_statement(p: P):
 
 
 def p_range_list(p: P):
-    """range_list : range_expr"""
-    # TODO: { COMMA range_expr }
-    pass
-
+    """range_list : range_expr COMMA range_list
+                  | range_expr"""
+    length: int = len(p)
+    if length == 4:
+        # range_expr { COMMA range_expr }
+        p[0] = [p[1]] + p[3]
+    elif length == 2:
+        # range_expr
+        p[0] = [p[1]]
 
 # arguments
 # p_arg_expr
@@ -222,6 +227,7 @@ def p_assignment(p: P):
                   | RANGE_IDENT ASSIGN range_expr
                   | SHEET_IDENT ASSIGN SHEET_IDENT"""
     pass
+    # print
 
 
 def p_range_expr(p: P):
@@ -242,7 +248,7 @@ def p_cell_ref(p: P):
 
 def p_scalar_expr(p: P):
     """scalar_expr : simple_expr"""
-    # TODO: { (EQ|NOTEQ|LT|LTEQ|GT|GTEQ) simple_expr}
+    # TODO: { (EQ|NOTEQ|LT|LTEQ|GT|GTEQ) simple_expr} print
     pass
 
 
