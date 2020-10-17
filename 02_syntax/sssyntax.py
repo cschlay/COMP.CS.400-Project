@@ -76,3 +76,8 @@ class Term:
         self.value = value
         self.op = op
         self.other_value = other_value
+
+
+class VariableDefinition:
+    def __init__(self, value):
+        self.value = value

@@ -41,7 +41,7 @@ def p_function_or_variable_definition(p: P):
     """function_or_variable_definition : variable_definition
     """
     # TODO: function_definition and subroutine_definition.
-    pass
+    p[0] = p[1]
 
 
 def p_variable_definition(p: P):
@@ -49,13 +49,15 @@ def p_variable_definition(p: P):
                            | range_definition
                            | sheet_definition
     """
-    p[0] = p[1]
+    rule_type = type(p[0])
+    p[0] = nodes.VariableDefinition(p[1])
+
     print_type: str = ''
-    if type(p[0]) is nodes.ScalarDefinition:
+    if rule_type is nodes.ScalarDefinition:
         print_type = "scalar"
-    elif type(p[0]) is nodes.RangeDefinition:
+    elif rule_type is nodes.RangeDefinition:
         print_type = "range"
-    elif type(p[0]) is nodes.SheetDefinition:
+    elif rule_type is nodes.SheetDefinition:
         print_type = "sheet"
     print(f"variable_definition({p[0].name}:{print_type})")
 
