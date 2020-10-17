@@ -18,8 +18,12 @@ class SSParserTest(TestCase):
 
 
     def test_range_definition(self):
-        # Range definition
-        pass
+        # RANGE RANGE_IDENT
+        ssparser.parse_data(data="range _rango2")
+
+        # RANGE RANGE_IDENT EQ range_xpr
+        ssparser.parse_data(data="range _rango = _rident")
+
 
     def test_sheet_definition(self):
         # Sheet definition

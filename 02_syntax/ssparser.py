@@ -8,7 +8,7 @@ from typing import List
 import ply.yacc
 
 import sslexer
-from sssyntax import ScalarDefinition
+import sssyntax as nodes
 
 tokens: List[str] = sslexer.tokens
 
@@ -37,8 +37,10 @@ def p_variable_definition(p: P):
     """
     p[0] = p[1]
     print_value: str = ''
-    if type(p[0]) is ScalarDefinition:
+    if type(p[0]) is nodes.ScalarDefinition:
         print_value = f"{p[0].name}:scalar"
+    elif type(p[0]) is nodes.RangeDefinition:
+        print_value = f"{p[0].name}:range"
     print(f"variable_definition({print_value})")
 
 
@@ -78,16 +80,19 @@ def p_sheet_row(p: P):
 def p_range_definition(p: P):
     """range_definition : RANGE RANGE_IDENT EQ range_expr
                         | RANGE RANGE_IDENT"""
-    pass
+    if len(p) == 3:
+        p[0] = nodes.RangeDefinition(name=p[2])
+    elif len(p) == 5:
+        p[0] = nodes.RangeDefinition(name=p[2], value=p[4])
 
 
 def p_scalar_definition(p: P):
     """scalar_definition : SCALAR IDENT EQ scalar_expr
                          | SCALAR IDENT"""
     if len(p) == 3:
-        p[0] = ScalarDefinition(name=p[2], value=None)
-    if len(p) == 5:
-        p[0] = ScalarDefinition(name=p[2], value=p[4])
+        p[0] = nodes.ScalarDefinition(name=p[2])
+    elif len(p) == 5:
+        p[0] = nodes.ScalarDefinition(name=p[2], value=p[4])
 
 
 def p_statement_list(p: P):
