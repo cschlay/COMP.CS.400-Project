@@ -57,25 +57,46 @@ def p_sheet_definition(p: P):
     """sheet_definition : SHEET SHEET_IDENT sheet_init
                         | SHEET SHEET_IDENT
     """
-    if len(p) == 3:
-        p[0] = nodes.SheetDefinition(name=p[2])
+    if len(p) == 4:
+        # SHEET SHEET_IDENT sheet_init
+        p[0] = nodes.SheetDefinition(name=p[2], value=p[3])
     else:
-        p[0] = nodes.SheetDefinition(name=p[3])
+        # SHEET SHEET_IDENT
+        p[0] = nodes.SheetDefinition(name=p[2])
 
 
 def p_sheet_init(p: P):
     """sheet_init : EQ sheet_init_list
                   | EQ INT_LITERAL MULT INT_LITERAL
     """
-    pass
+    if type(p[2]) is nodes.SheetInitList:
+        # EQ sheet_init_list
+        p[0] = nodes.SheetInit(p[2])
+    else:
+        # EQ INT_LITERAL MULT INT_LITERAL
+        p[0] = nodes.SheetInit(nodes.Math(p[3], p[2], p[4]))
 
 
 def p_sheet_init_list(p: P):
-    """sheet_init_list : LCURLY sheet_row RCURLY"""
-    # TODO: LCURLY sheet_row { sheet_row } RCURLY
-    pass
+    """sheet_init_list : LCURLY multiple_sheet_row RCURLY"""
+    p[0] = nodes.SheetInitList(p[2])
 
 
+# additional rule to allow multiple sheet_rows
+# doesn't do it with class but a list of sheet rows
+def p_multiple_sheet_row(p: P):
+    """multiple_sheet_row : sheet_row multiple_sheet_row
+                          | sheet_row"""
+    length: int = len(p)
+    if length == 3:
+        # sheet_row {sheet_row}
+        return [p[1]] + p[2]
+    elif length == 2:
+        # sheet_row
+        return [p[1]]
+
+
+# TODO: change it to use list of expressions.
 def p_sheet_row(p: P):
     """sheet_row : simple_expr COMMA sheet_row
                  | simple_expr"""

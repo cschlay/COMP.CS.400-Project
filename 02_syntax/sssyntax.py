@@ -17,6 +17,12 @@ class Factor:
         self.has_minus = has_minus
 
 
+class Math:
+    def __init__(self, op, *args):
+        self.op = op
+        self.values = args
+
+
 class RangeDefinition:
     def __init__(self, name: str, value: str = None):
         self.name = name
@@ -37,11 +43,19 @@ class SimpleExpression:
 
 
 class SheetDefinition:
-    def __init__(self, name: str, sheet_init=None):
+    def __init__(self, name: str, value=None):
         self.name = name
+        self.value = value
 
-        # For unevaluated INT_LITERAL MULT INT_LITERAL
-        self.sheet_init = sheet_init
+
+class SheetInit:
+    def __init__(self, value):
+        self.value = value
+
+
+class SheetInitList:
+    def __init__(self, value: List):
+        self.value = value
 
 
 class SheetRow:
