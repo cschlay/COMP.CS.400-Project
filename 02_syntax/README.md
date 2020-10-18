@@ -32,6 +32,21 @@ is quite similar as in phase 1 where lex was used.
 
 ### Defining Rules
 
+The rules are defined simply by defining a function as
+
+```python
+def p_rulename(p):
+    """rulename : tokens or other rules as sequence
+                | tokens or other rules as sequence
+    """
+    p[0] = p[1]
+```
+
+The `p[0]` need to always be assigned otherwise we are unable
+to access it from other rules. The PLY recommended two approach putting
+it as `Tuple` or constructing objects. I preferred to use
+objects because I think it is hard to use array or tuple indices.
+
 ### PLY Processing
 
 After the rules are defined the overall structure of program would be.
