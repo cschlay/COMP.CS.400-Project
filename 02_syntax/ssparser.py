@@ -18,7 +18,7 @@ P = [ply.yacc.YaccProduction]
 
 def p_program(p: P):
     """program : multiple_function_or_variable_definition statement_list
-               | function_or_variable_definition"""
+               | multiple_function_or_variable_definition"""
     # No being sure how this will be used, it remains as dict.
     p[0] = nodes.Program(functions_and_variables=p[1])
     if len(p) == 3:
