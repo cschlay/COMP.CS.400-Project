@@ -181,6 +181,7 @@ def p_statement(p: P):
         # PRINT_RANGE [INFO_STRING] range_expr
         # PRINT_SCALAR [INFO_STRING] scalar_expr
         p[0] = nodes.StatementPrint(p[1:])
+        print("statement(print)")
     elif p[1] == "if":
         # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
         if length == 5:
@@ -188,21 +189,24 @@ def p_statement(p: P):
         elif length == 7:
             # with else
             p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4], else_statement_list=p[6])
+        print("statement(if)")
     elif p[1] == "while":
         # WHILE scalar_expr DO statement_list DONE
         p[0] = nodes.StatementWhile(condition=p[2], statement_list=p[3])
+        print("statement(while)")
     elif p[1] == "for":
         # FOR range_list DO statement_list DONE
         p[0] = nodes.StatementFor(range_list=p[1], statement_list=p[2])
+        print("statement(for)")
     elif p[1] == "return":
         # RETURN scalar_expr
         # RETURN range_expr
         p[0] = nodes.StatementReturn(expression=p[2])
+        print("statement(return)")
     elif type(p[1]) is nodes.Assignment:
         # assignment
         p[0] = nodes.Statement(p[1])
-    # TODO: Verify "statement name" from the staff.
-    print(f"statement({p[1]})")
+        print("statement(assignment)")
 
 
 def p_range_list(p: P):
