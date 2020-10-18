@@ -11,7 +11,15 @@ class SSParserTest(TestCase):
 
     def test_program(self):
         program = """
+        ... Some variable declarations ...
         scalar scal1 = 1.0
-        scalar scal2 = scal1
+        scalar scal2 = scal1 + 1.0 * 2.0 + 1.0
+        
+        ... ...
+        ... Statement list ...
+        ... ...
+        
+        ... assignments ...
+        ident1 := 1.0
         """
         ssparser.parse_data(data=program)
