@@ -27,9 +27,46 @@ So some optimization can be done with syntax analysis too.
 
 ## 2. Syntactic Structure in PLY
 
+One need to mostly define the grammar, the structure of processing
+is quite similar as in phase 1 where lex was used.
+
 ### Defining Rules
 
 ### PLY Processing
+
+After the rules are defined the overall structure of program would be.
+
+```python
+import ply.yacc
+import sslexer
+from typing import List
+P = [ply.yacc.YaccProduction]
+
+
+tokens: List[str] = sslexer.tokens
+
+def p_rulename(p: P):
+    """rulename : the grammar here
+    """
+    p[0] = p[1]  # Need to assign something to pass forward
+
+
+def p_error(p: P):
+    pass
+
+
+parser: ply.yacc.LRParser = ply.yacc.yacc()
+
+
+def parse_data(data: str):
+    parser.parse(data, lexer=sslexer.lexer, debug=False)
+```
+
+The tokens need to be imported from the lexer module.
+After that the grammar rules need to be defined and possibly the error rule too.
+Finally the parse need to be invoked and feed some data.
+The lexer from phase 1 need to be passed as argument.
+
 
 ## 3. Syntax of Elements
 
