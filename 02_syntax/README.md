@@ -106,6 +106,19 @@ a set-like structure `{elem1, elem2}`, where elements can be a valid `simple_exp
 
 ### c) Sheet variable with initialization list
 
+As mentioned in a) I think the sheet with initialization list a set-like structure.
+If we take a look at what elements can be put there it has
+`simple_expr` which can be `term` itself which means it can be `atom` a decimal or a variable name or function call or
+other expressions. Atom was specifies such that it can reach `simple_expr` again which defines more valid syntax.
+
+It looks like it accepts a boolean-like values because it and have equality comparison as value.
+It can also have arithmetic operations with other expressions. This allows complex sheets such as
+
+```
+sheet SH = {2+4/6, variable1 <= variable2}
+sheet HH = {2+4+6*12, variable1 <= 9}
+```
+
 ## 4. Syntax Definition
 
 ### a) Nested functions
