@@ -87,6 +87,21 @@ The lexer from phase 1 need to be passed as argument.
 
 ### a) Sheet variable definition
 
+The specification of sheet variable is
+
+```
+sheet_definition ::= SHEET SHEET_IDENT [sheet_init]
+```
+
+As I undershoot it the concrete use is something like `sheet NAME` and `sheet SH = 2 * 2` or `sheet SH = {2.0 * 2.0}`.
+The first rule without the optional `sheet_init` seem to be just
+a declaration of a variable.
+When we do use `sheet_init` we have another rules that defines the `=` symbol which might be
+assignment for sheet variables. However, there exist a different assignment token.
+
+And the value can be either and integer multiplication or
+a set-like structure `{elem1, elem2}`, where elements can be a valid `simple_expr` (arithmetic) or another variable. 
+
 ### b) Function call
 
 ### c) Sheet variable with initialization list
