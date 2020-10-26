@@ -180,6 +180,15 @@ so plus and minus operations are applied after.
 
 ### g) Statement and definition endings
 
+A statement has unique start symbol such as `FOR`, `IF`, and idents.
+Some have `DONE` and `ENDIF` as the ending mark.
+
+The ident tokens also have unique syntax so when it starts with one of them
+we know it is an assignment and that is the most complex one. But
+there is no conflicts so it can be thought that only assignment can do stuff the specific
+statements can't. Variable definitions can be detected by `scalar`, `range`, `sheet` keywords and their lengths
+are known so that limits the conflicts.
+
 ## 5. Other remarks
 
 ## 6. Thoughts
