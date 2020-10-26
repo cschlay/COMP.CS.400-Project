@@ -62,11 +62,46 @@ def p_variable_definition(p: P):
     print(f"variable_definition( {p[1].name}:{print_type} )")
 
 
-# p_function_definition
+def p_function_definition(p: P):
+    """function_definition : FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS statement_list END
+                           | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS statement_list END
+                           | FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
+                           | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END"""
+    pass
+
+
+# helper definition for scalar or range in function
+def p_scalar_or_range(p: P):
+    """scalar_or_range : SCALAR
+                       | RANGE"""
+    p[0] = p[1]
+
+
+# helper definition for multiple variables
+def p_multiple_variable_definition(p: P):
+    """multiple_variable_definition : variable_definition multiple_variable_definition
+                                    | variable_definition"""
+    if len(p) == 3:
+        # variable_definition multiple_variable_definition
+        p[0] = [p[1]] + p[2]
+    else:
+        # variable_definition
+        p[0] = [p[1]]
+
+
 # p_subroutine_definition
 
-# p_formals(p: P):
-# p_formal_arg(p: P):
+def p_formals(p: P):
+    """formals : formal_arg COMMA formal_arg
+               | formal_arg"""
+    pass
+
+
+def p_formal_arg(p: P):
+    """formal_arg : IDENT COLON SCALAR
+                  | RANGE_IDENT COLON RANGE
+                  | SHEET_IDENT COLON SHEET"""
+    pass
 
 
 def p_sheet_definition(p: P):
@@ -344,6 +379,7 @@ def p_atom(p: P):
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
         p[0] = nodes.Atom(p[3], has_parenthesis=True)
+
     if p[0].value:
         print(f"atom( {p[0]} )")
     else:
