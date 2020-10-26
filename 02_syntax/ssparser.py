@@ -39,8 +39,9 @@ def p_multiple_function_or_variable_definition(p: P):
 
 def p_function_or_variable_definition(p: P):
     """function_or_variable_definition : variable_definition
+                                       | function_definition
     """
-    # TODO: function_definition and subroutine_definition.
+    # TODO: subroutine_definition.
     p[0] = p[1]
 
 
@@ -67,7 +68,7 @@ def p_function_definition(p: P):
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END"""
-    pass
+    print(f"function_definition( {p[2]} )")
 
 
 # helper definition for scalar or range in function
@@ -256,8 +257,19 @@ def p_range_list(p: P):
         # range_expr
         p[0] = [p[1]]
 
-# arguments
-# p_arg_expr
+
+def p_arguments(p: P):
+    """arguments : arg_expr COMMA arg_expr
+                 | arg_expr"""
+    pass
+
+
+def p_arg_expr(p: P):
+    """arg_expr : scalar_expr
+                | range_expr
+                | SHEET_IDENT"""
+    pass
+
 # p_subroutine_call
 
 
@@ -365,27 +377,32 @@ def p_factor(p: P):
 def p_atom(p: P):
     """atom : IDENT
             | DECIMAL_LITERAL
+            | function_call
             | cell_ref
             | NUMBER_SIGN range_expr
             | LPAREN scalar_expr RPAREN
     """
-    # TODO: function_call
     if len(p) == 2:
-        # IDENT, DECIMAL_LITERAL, cell_ref
+        # IDENT, DECIMAL_LITERAL, function_call, cell_ref
         p[0] = nodes.Atom(p[1])
     elif (len(p)) == 3:
         # NUMBER_SIGN range_expr
         p[0] = nodes.Atom(p[2], has_number_sign=True)
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
-        p[0] = nodes.Atom(p[3], has_parenthesis=True)
+        p[0] = nodes.Atom(p[2], has_parenthesis=True)
 
-    if p[0].value:
+    if type(p[0].value) == str:
         print(f"atom( {p[0]} )")
     else:
         print("atom")
 
-# p_function_call
+
+def p_function_call(p: P):
+    """function_call : FUNC_IDENT LSQUARE arguments RSQUARE
+                     | FUNC_IDENT LSQUARE RSQUARE"""
+    print(f"function_call( {p[1]} )")
+
 
 
 def p_error(p: P):
