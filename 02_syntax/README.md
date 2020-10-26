@@ -165,6 +165,11 @@ another minus cannot do it because it doesn't have another `term`.
 
 ### e) Comparison in sheet init
 
+It is not possible to do comparison in `sheet_init_list`.
+There reason is that the `sheet_init_list` uses `sheet_row` but
+it uses `simple_expr` which doesn't reach to `scalar_expr` which has
+all equality comparison operators.
+
 ### f) Addition/Subscription after multiplication/division
 
 ### g) Statement and definition endings
