@@ -146,6 +146,23 @@ and then it goes to `range_expr` and then it refers to another `RANGE_IDENT` or 
 
 ### d) Validity of `xx--yy` and `--xx`
 
+I think `xx--yy` might be possible because it would evaluate
+as follows:
+
+```
+ATOM = xx
+ATOM = yy
+FACTOR = xx
+FACTOR = -yy
+TERM = xx
+TERM = -yy
+SIMPLE_EXPR = xx--yy
+```
+
+However, the `--xx` isn't possible because `factor` only defines
+one minus an it cannot refer to itself. The `simple_expr` that would add 
+another minus cannot do it because it doesn't have another `term`.
+
 ### e) Comparison in sheet init
 
 ### f) Addition/Subscription after multiplication/division
