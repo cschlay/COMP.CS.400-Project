@@ -59,7 +59,7 @@ def p_variable_definition(p: P):
         print_type = "range"
     elif rule_type is nodes.SheetDefinition:
         print_type = "sheet"
-    print(f"variable_definition({p[1].name}:{print_type})")
+    print(f"variable_definition( {p[1].name}:{print_type} )")
 
 
 # p_function_definition
@@ -181,7 +181,7 @@ def p_statement(p: P):
         # PRINT_RANGE [INFO_STRING] range_expr
         # PRINT_SCALAR [INFO_STRING] scalar_expr
         p[0] = nodes.StatementPrint(p[1:])
-        print("statement(print)")
+        print(f"statement( {p[1]} )")
     elif p[1] == "if":
         # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
         if length == 5:
@@ -189,24 +189,25 @@ def p_statement(p: P):
         elif length == 7:
             # with else
             p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4], else_statement_list=p[6])
-        print("statement(if)")
+        print("statement( if )")
     elif p[1] == "while":
         # WHILE scalar_expr DO statement_list DONE
         p[0] = nodes.StatementWhile(condition=p[2], statement_list=p[3])
-        print("statement(while)")
+        print("statement( while )")
     elif p[1] == "for":
         # FOR range_list DO statement_list DONE
         p[0] = nodes.StatementFor(range_list=p[1], statement_list=p[2])
-        print("statement(for)")
+        print("statement( for )")
     elif p[1] == "return":
         # RETURN scalar_expr
         # RETURN range_expr
         p[0] = nodes.StatementReturn(expression=p[2])
-        print("statement(return)")
+        print("statement( return )")
     elif type(p[1]) is nodes.Assignment:
         # assignment
         p[0] = nodes.Statement(p[1])
-        print("statement(assignment)")
+        # Seems like this shoulnd't print
+        # print("statement( assignment )")
 
 
 def p_range_list(p: P):
@@ -231,7 +232,7 @@ def p_assignment(p: P):
                   | RANGE_IDENT ASSIGN range_expr
                   | SHEET_IDENT ASSIGN SHEET_IDENT"""
     p[0] = nodes.Assignment(variable=p[1], value=p[3])
-    print(f"assignment({p[1]})")
+    print(f"assignment( {p[1]} )")
 
 
 def p_range_expr(p: P):
@@ -343,7 +344,10 @@ def p_atom(p: P):
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
         p[0] = nodes.Atom(p[3], has_parenthesis=True)
-    print(f"atom( {p[0]} )")
+    if p[0].value:
+        print(f"atom( {p[0]} )")
+    else:
+        print("atom")
 
 # p_function_call
 

@@ -19,6 +19,7 @@ class Atom:
     def __str__(self):
         return str(self.value)
 
+
 class Assignment:
     def __init__(self, variable, value):
         self.variable = variable
