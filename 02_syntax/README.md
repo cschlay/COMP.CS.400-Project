@@ -172,6 +172,12 @@ all equality comparison operators.
 
 ### f) Addition/Subscription after multiplication/division
 
+The definition ensures this by having rule `term` which does
+the multiplication and division.
+Only after the `term` is constructed the `simple_expr` uses
+the `terms` so at this point they have already evaluated terms
+so plus and minus operations are applied after.
+
 ### g) Statement and definition endings
 
 ## 5. Other remarks
