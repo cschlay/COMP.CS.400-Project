@@ -16,6 +16,8 @@ class Atom:
         self.has_number_sign = has_number_sign
         self.has_parenthesis = has_parenthesis
 
+    def __str__(self):
+        return str(self.value)
 
 class Assignment:
     def __init__(self, variable, value):

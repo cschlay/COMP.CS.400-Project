@@ -334,7 +334,6 @@ def p_atom(p: P):
             | LPAREN scalar_expr RPAREN
     """
     # TODO: function_call
-    print("atom")
     if len(p) == 2:
         # IDENT, DECIMAL_LITERAL, cell_ref
         p[0] = nodes.Atom(p[1])
@@ -344,6 +343,7 @@ def p_atom(p: P):
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
         p[0] = nodes.Atom(p[3], has_parenthesis=True)
+    print(f"atom( {p[0]} )")
 
 # p_function_call
 
