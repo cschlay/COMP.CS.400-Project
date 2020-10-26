@@ -125,7 +125,24 @@ sheet HH = {2+4+6*12, variable1 <= 9}
 
 ### b) Arithmetics with integers
 
+I don't think it is possible, and it didn't work when I checked it.
+That is because the specification doesn't include a rule that
+could have `INT_LITERAL` as `atom`, which is required to form `term` which is further 
+required for `simple_expr` which defines the plus operation.
+
 ### c) Range variable with decimals
+
+It doesn't seem to be possible because the plus operation is defined in
+`simple_expr` but `range_expr` cannot reach it.
+
+First it attempt to evaluate
+
+```
+range_definition ::= RANGE RANGE_IDENT EQ range_expr
+```
+
+and then it goes to `range_expr` and then it refers to another `RANGE_IDENT` or cells or range expression.
+
 
 ### d) Validity of `xx--yy` and `--xx`
 
@@ -139,3 +156,9 @@ sheet HH = {2+4+6*12, variable1 <= 9}
 
 ## 6. Thoughts
 
+I think this phase had much more work, but the similar 
+program structure as in phase 1 was possible.
+
+I also found out I had missed `SHEET` keyword in lexer.
+But the parser was still quite straightforward except that
+I wasn't sure what should be assigned to `p[0]`.
