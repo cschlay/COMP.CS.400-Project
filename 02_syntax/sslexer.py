@@ -104,8 +104,11 @@ t_MINUS: str = r"-"
 t_MULT: str = r"\*"
 t_DIV: str = r"/"
 # The long tokens
-t_INFO_STRING: str = r"!.*!"  # It was not specified what characters are allowed.
 
+def t_INFO_STRING(t):
+    r"!.*!"
+    t.value = t.value[1:-1]
+    return t
 
 # 1-2 capital letters and 1-3 digits
 # Placed above t_IDENT to increase the precedence.
