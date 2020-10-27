@@ -104,6 +104,35 @@ a set-like structure `{elem1, elem2}`, where elements can be a valid `simple_exp
 
 ### b) Function call
 
+The function call is specified as
+
+```
+function_call ::= FUNC_IDENT LSQUARE [ arguments ] RSQUARE
+```
+
+which means the first token must be `FUNC_IDENT` a valid function name.
+Then we have `LSQUARE` and `RSQUARE` so we have something like 
+
+```
+Eat_ice_cream[]
+```
+
+as a function call if no arguments are given. And they are given they
+are defined in `arguments`. Which is specifies as
+
+```
+arguments  ::= arg_expr { COMMA arg_expr }
+```
+
+and that just means `arg_expr` things can be given separated by `COMMA`, `,`.
+
+The an argument must be `scalar_expr`, `range_expr` or `SHEET_IDENT`.
+Scalar expression allows arithmetics and range expressions range for example:
+
+```
+Sell_ice_cream[1.0+1.0, range CELL_REF_HERE .. CELL_REF_HERE]
+```
+
 ### c) Sheet variable with initialization list
 
 As mentioned in a) I think the sheet with initialization list a set-like structure.
@@ -122,6 +151,13 @@ sheet HH = {2+4+6*12, variable1 <= 9}
 ## 4. Syntax Definition
 
 ### a) Nested functions
+
+It doesn't seem to be possible to define nested functions because the only reference to
+`function_definition` is `function_or_variable_definition` and 
+only the definition of `program` uses it. It doesn't have any way to reach
+the `function_definition` again because the only possibilities
+are `variable_definition` or `statement_list` but neither rule allows
+`function_definition`.
 
 ### b) Arithmetics with integers
 
