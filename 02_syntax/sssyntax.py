@@ -58,7 +58,9 @@ class RangeDefinition:
 
 class RangeExpression:
     def __init__(self, range_ident=None, cell1=None, cell2=None, range_expression=None, int_range1=None,
+                 function_call=None,
                  int_range2=None):
+        self.function_call = None
         self.range_ident = None
         self.cell1 = None
         self.cell2 = None
@@ -136,6 +138,12 @@ class StatementFor:
 class StatementReturn:
     def __init__(self, expression):
         self.expression = expression
+
+
+class SubroutineCall:
+    def __init__(self, function_name, arguments):
+        self.function_name = function_name
+        self.arguments = arguments
 
 
 class Term:

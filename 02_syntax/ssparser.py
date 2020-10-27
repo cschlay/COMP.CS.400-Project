@@ -20,6 +20,7 @@ def p_program(p: P):
     """program : multiple_function_or_variable_definition statement_list
                | multiple_function_or_variable_definition"""
     # No being sure how this will be used, it remains as dict.
+    print("program")
     p[0] = nodes.Program(functions_and_variables=p[1])
     if len(p) == 3:
         p[0].statements = p[2]
@@ -40,8 +41,8 @@ def p_multiple_function_or_variable_definition(p: P):
 def p_function_or_variable_definition(p: P):
     """function_or_variable_definition : variable_definition
                                        | function_definition
+                                       | subroutine_definition
     """
-    # TODO: subroutine_definition.
     p[0] = p[1]
 
 
@@ -90,7 +91,11 @@ def p_multiple_variable_definition(p: P):
         p[0] = [p[1]]
 
 
-# p_subroutine_definition
+def p_subroutine_definition(p: P):
+    """subroutine_definition : SUBROUTINE FUNC_IDENT LSQUARE RSQUARE IS multiple_variable_definition statement_list END
+                             | SUBROUTINE FUNC_IDENT LSQUARE formals RSQUARE IS multiple_variable_definition statement_list END"""
+    print(f"subroutine_definition( {p[2]} )")
+
 
 def p_formals(p: P):
     """formals : formal_arg COMMA formal_arg
@@ -206,11 +211,10 @@ def p_statement(p: P):
                  | IF scalar_expr THEN statement_list ELSE statement_list ENDIF
                  | WHILE scalar_expr DO statement_list DONE
                  | FOR range_list DO statement_list DONE
+                 | subroutine_call
                  | RETURN scalar_expr
                  | RETURN range_expr
                  | assignment"""
-    # TODO: subroutine_call
-    statement_name = None
     length: int = len(p)
     if p[1] in ["print_sheet", "print_range", "print_scalar"]:
         # PRINT_SHEET [INFO_STRING] SHEET_IDENT
@@ -239,11 +243,12 @@ def p_statement(p: P):
         # RETURN range_expr
         p[0] = nodes.StatementReturn(expression=p[2])
         print("statement( return )")
-    elif type(p[1]) is nodes.Assignment:
-        # assignment
+    elif type(p[1]) is nodes.Assignment or type(p[1]) is nodes.SubroutineCall:
+        # assignment, subroutine_call
         p[0] = nodes.Statement(p[1])
         # Seems like this shoulnd't print
         # print("statement( assignment )")
+
 
 
 def p_range_list(p: P):
@@ -270,7 +275,12 @@ def p_arg_expr(p: P):
                 | SHEET_IDENT"""
     pass
 
-# p_subroutine_call
+
+def p_subroutine_call(p: P):
+    """subroutine_call : FUNC_IDENT LSQUARE arguments RSQUARE
+                       | FUNC_IDENT LSQUARE RSQUARE"""
+    print(f"subroutine_call( {p[1]} )")
+    p[0] = nodes.SubroutineCall(function_name=p[1], arguments=p[3])
 
 
 def p_assignment(p: P):
@@ -285,8 +295,8 @@ def p_assignment(p: P):
 def p_range_expr(p: P):
     """range_expr : RANGE_IDENT
                   | RANGE cell_ref DOTDOT cell_ref
+                  | LSQUARE function_call RSQUARE
                   | range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE"""
-    # TODO: LSQUARE function_call RSQUARE
     length: int = len(p)
     if length == 2:
         # RANGE_IDENT, should be a reference
@@ -294,6 +304,8 @@ def p_range_expr(p: P):
     elif length == 5:
         # RANGE cell_ref DOTDOT cell_ref
         p[0] = nodes.RangeExpression(cell1=p[2], cell2=p[4])
+    elif length == 4:
+        p[0] = nodes.RangeExpression(function_call=p[2])
     elif length == 6:
         # range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE
         p[0] = nodes.RangeExpression(range_expression=p[1], int_range1=p[3], int_range2=p[5])
