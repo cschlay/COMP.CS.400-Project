@@ -235,3 +235,16 @@ program structure as in phase 1 was possible.
 I also found out I had missed `SHEET` keyword in lexer.
 But the parser was still quite straightforward except that
 I wasn't sure what should be assigned to `p[0]`.
+
+I think the difficulties was in the beginning and not being sure 
+what should be assigned to `p[0]`. I decided to create objects as 
+the docs recommended it as another way. However, I skipped doing it with functions
+because I wasn't sure how it will be used and it might be more of later phase thing AST construction
+where the use is better known.
+
+I think defining rules in general is easy if the language is already specified.
+But I think defining multiple and optional things in syntax is hard because
+it required recursive thinking.
+
+I learned more about language processing, and I think I can write
+a mini-interpreter with the knowledge of these two first phases.
