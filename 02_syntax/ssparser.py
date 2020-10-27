@@ -18,8 +18,7 @@ P = [ply.yacc.YaccProduction]
 
 def p_program(p: P):
     """program : multiple_function_or_variable_definition statement_list
-               | multiple_function_or_variable_definition"""
-    # No being sure how this will be used, it remains as dict.
+               | statement_list"""
     print("program")
     p[0] = nodes.Program(functions_and_variables=p[1])
     if len(p) == 3:
@@ -41,16 +40,14 @@ def p_multiple_function_or_variable_definition(p: P):
 def p_function_or_variable_definition(p: P):
     """function_or_variable_definition : variable_definition
                                        | function_definition
-                                       | subroutine_definition
-    """
+                                       | subroutine_definition"""
     p[0] = p[1]
 
 
 def p_variable_definition(p: P):
     """variable_definition : scalar_definition
                            | range_definition
-                           | sheet_definition
-    """
+                           | sheet_definition"""
     rule_type = type(p[1])
     p[0] = nodes.VariableDefinition(p[1])
 
@@ -305,6 +302,7 @@ def p_range_expr(p: P):
         # RANGE cell_ref DOTDOT cell_ref
         p[0] = nodes.RangeExpression(cell1=p[2], cell2=p[4])
     elif length == 4:
+        # LSQUARE function_call RSQUARE
         p[0] = nodes.RangeExpression(function_call=p[2])
     elif length == 6:
         # range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE
@@ -318,12 +316,14 @@ def p_cell_ref(p: P):
     """
     length: int = len(p)
     if length == 3:
-        # SHEET_IDENT SQUOTE COORDINATE_IDENT
         if p[1] == "$":
+            # DOLLAR COLON RANGE_IDENT
             p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", range_ident=p[3], has_dollar=True)
         else:
+            # SHEET_IDENT SQUOTE COORDINATE_IDENT
             p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", sheet_ident=p[1], coordinate_ident=True)
     elif length == 1:
+        # DOLLAR
         p[0] = nodes.CellRef(p[1], has_dollar=True)
 
 
@@ -333,8 +333,10 @@ def p_scalar_expr(p: P):
     print("scalar_expr")
     length: int = len(p)
     if length == 3:
+        # simple_expr scalar_op scalar_expr
         p[0] = nodes.ScalarExpression(p[1], op=p[2], other_value=p[3])
     elif length == 2:
+        # simple_expr
         p[0] = nodes.ScalarExpression(p[1])
 
 
