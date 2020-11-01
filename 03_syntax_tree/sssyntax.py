@@ -1,7 +1,28 @@
 """
 A helper to construct the AST.
 """
-from typing import List, Union
+from typing import List
+
+
+class Node:
+    """
+    The base node for every other nodes for AST inherits this.
+    """
+
+    def __init__(self, nodetype: str, value: str = None, **kwargs):
+        self.nodetype: str = self._validate_nodetype(nodetype)
+        if value:
+            self.value: str = value
+
+        # Put the children as attributes.
+        for attr, value in kwargs.items():
+            if attr.startswith('child'):
+                setattr(self, attr, value)
+
+    def _validate_nodetype(self, nodetype: str):
+        if nodetype not in []:
+            raise TypeError('Nodetype not implemented!')
+        return nodetype
 
 
 class Program:
