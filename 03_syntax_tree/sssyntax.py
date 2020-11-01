@@ -4,6 +4,8 @@ A helper to construct the AST.
 
 TYPE_PROGRAM = "program"
 TYPE_SHEET_DEFINITION = "sheet_definition"
+TYPE_SHEET_INIT = "sheet_init"
+TYPE_SHEET_INIT_LIST = "sheet_init_list"
 TYPE_VARIABLE_DEFINITION ="variable_definition"
 
 class Node:

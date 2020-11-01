@@ -109,7 +109,7 @@ def p_sheet_definition(p: P):
     """
     if len(p) == 4:
         # SHEET SHEET_IDENT sheet_init
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2], child_sheet_init=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2], child_=p[3])
     else:
         # SHEET SHEET_IDENT
         p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2])
@@ -119,17 +119,19 @@ def p_sheet_init(p: P):
     """sheet_init : EQ sheet_init_list
                   | EQ INT_LITERAL MULT INT_LITERAL
     """
-    if type(p[2]) is list:
+    if len(p) == 3:
         # EQ sheet_init_list
-        p[0] = nodes.SheetInit(p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=p[1], child_=p[2])
     else:
         # EQ INT_LITERAL MULT INT_LITERAL
-        p[0] = nodes.SheetInit(nodes.Math(p[3], p[2], p[4]))
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=f"{p[1]} {p[2]} {p[3]} {p[4]}",
+                          child_left_int_literal=p[2],
+                          child_right_int_literal=p[4])
 
 
 def p_sheet_init_list(p: P):
     """sheet_init_list : LCURLY multiple_sheet_row RCURLY"""
-    p[0] = p[2]
+    p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT_LIST, children_sheet_row=p[2])
 
 
 # additional rule to allow multiple sheet_rows
@@ -150,7 +152,7 @@ def p_sheet_row(p: P):
     """sheet_row : simple_expr COMMA sheet_row
                  | simple_expr"""
     length: int = len(p)
-    if length == 5:
+    if length == 4:
         # simple_expr { COMMA simple_expr }
         p[0] = nodes.SheetRow([p[1]] + p[3].value)
     elif length == 2:
