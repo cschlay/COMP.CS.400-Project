@@ -21,7 +21,9 @@ def p_program(p: P):
                | statement_list"""
     if len(p) == 3:
         # multiple_function_or_variable_definition statement_list
-        p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, children_=[*p[1], p[2]])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM,
+                          children_function_or_variable_definition=p[1],
+                          child_statement_list=p[2])
     else:
         # statement_list
         p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, child_statement_list=p[1])
@@ -66,6 +68,7 @@ def p_function_definition(p: P):
 def p_scalar_or_range(p: P):
     """scalar_or_range : SCALAR
                        | RANGE"""
+    # Omitted, since its just helper for function to check the syntax.
     p[0] = p[1]
 
 
