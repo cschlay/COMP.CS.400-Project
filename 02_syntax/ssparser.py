@@ -154,7 +154,7 @@ def p_sheet_row(p: P):
     """sheet_row : simple_expr COMMA sheet_row
                  | simple_expr"""
     length: int = len(p)
-    if length == 5:
+    if length == 4:
         # simple_expr { COMMA simple_expr }
         p[0] = nodes.SheetRow([p[1]] + p[3].value)
     elif length == 2:
