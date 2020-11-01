@@ -3,6 +3,7 @@ A helper to construct the AST.
 """
 
 TYPE_PROGRAM = "program"
+TYPE_SHEET_DEFINITION = "sheet_definition"
 TYPE_VARIABLE_DEFINITION ="variable_definition"
 
 class Node:

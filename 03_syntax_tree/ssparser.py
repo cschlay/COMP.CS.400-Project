@@ -109,10 +109,10 @@ def p_sheet_definition(p: P):
     """
     if len(p) == 4:
         # SHEET SHEET_IDENT sheet_init
-        p[0] = nodes.SheetDefinition(name=p[2], value=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2], child_sheet_init=p[3])
     else:
         # SHEET SHEET_IDENT
-        p[0] = nodes.SheetDefinition(name=p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2])
 
 
 def p_sheet_init(p: P):
