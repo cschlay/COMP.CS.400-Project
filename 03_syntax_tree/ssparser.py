@@ -428,4 +428,7 @@ parser: ply.yacc.LRParser = ply.yacc.yacc()
 
 
 def parse_data(data: str):
-    parser.parse(data, lexer=sslexer.lexer, debug=False)
+    """
+    Returns the root of the abstract syntax tree.
+    """
+    return parser.parse(data, lexer=sslexer.lexer, debug=False)

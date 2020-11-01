@@ -1,6 +1,7 @@
 import codecs
 
 import ssparser
+import tree_print
 
 
 def read_file(filename: str):
@@ -10,7 +11,8 @@ def read_file(filename: str):
 
 def parse_file(filename: str):
     file_data: str = read_file(filename=filename)
-    ssparser.parse_data(data=file_data)
+    tree_root = ssparser.parse_data(data=file_data)
+    tree_print.treeprint(tree_root, "unicode")
 
 
 if __name__ == '__main__':
