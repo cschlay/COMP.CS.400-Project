@@ -19,10 +19,12 @@ P = [ply.yacc.YaccProduction]
 def p_program(p: P):
     """program : multiple_function_or_variable_definition statement_list
                | statement_list"""
-    print("program")
-    p[0] = nodes.Program(functions_and_variables=p[1])
     if len(p) == 3:
-        p[0].statements = p[2]
+        # multiple_function_or_variable_definition statement_list
+        p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, children_=[*p[1], p[2]])
+    else:
+        # statement_list
+        p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, child_statement_list=p[1])
 
 
 # Additional definition for multiple function_or_variable_defs, uses lists
