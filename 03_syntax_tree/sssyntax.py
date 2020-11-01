@@ -1,10 +1,9 @@
 """
 A helper to construct the AST.
 """
-from typing import List
 
-TYPE_PROGRAM = 'program'
-
+TYPE_PROGRAM = "program"
+TYPE_VARIABLE_DEFINITION ="variable_definition"
 
 class Node:
     """
@@ -18,24 +17,20 @@ class Node:
 
         # Put the children as attributes.
         for attr, value in kwargs.items():
-            print(type(value))
-            if attr.startswith('children_') and type(value) is list:
+            setattr(self, attr, value)
+            """
+            if attr.startswith("children_") and type(value) is list:
                 setattr(self, attr, value)
             elif attr.startswith("child_") and type(value) is Node:
                 setattr(self, attr, value)
             else:
                 raise TypeError(f"Invalid child node {attr}, the value is {value}.")
+            """
 
     def _validate_nodetype(self, nodetype: str):
-        if nodetype not in [TYPE_PROGRAM]:
-            raise TypeError("Nodetype not implemented!")
+        #if nodetype not in [TYPE_PROGRAM, TYPE_VARIABLE_DEFINITION]:
+        #     raise TypeError("Nodetype not implemented!")
         return nodetype
-
-
-class Program:
-    def __init__(self, functions_and_variables: List = [], statements: List = []):
-        self.functions_and_variables = functions_and_variables
-        self.statements = statements
 
 
 class Atom:
