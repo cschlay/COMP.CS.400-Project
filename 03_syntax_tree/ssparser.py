@@ -154,10 +154,13 @@ def p_sheet_row(p: P):
     length: int = len(p)
     if length == 4:
         # simple_expr { COMMA simple_expr }
-        p[0] = nodes.SheetRow([p[1]] + p[3].value)
+        if hasattr(p[3], "children_simple_expr"):
+            p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_ROW, children_simple_expr=[p[1], *p[3].children_simple_expr])
+        else:
+            p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_ROW, children_simple_expr=[p[1], p[3].child_])
     elif length == 2:
         # simple_expr
-        p[0] = nodes.SheetRow([p[1]])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_ROW, child_=p[1])
 
 
 def p_range_definition(p: P):
