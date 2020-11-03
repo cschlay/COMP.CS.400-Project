@@ -357,36 +357,34 @@ def p_simple_expr(p: P):
                    | term MINUS simple_expr
                    | term"""
     if len(p) == 4:
-        # term {(PLUS|MINUS)} term
-        p[0] = nodes.SimpleExpression(p[1], op=p[2], other_value=p[3])
+        # term {(PLUS|MINUS) term}
+        p[0] = nodes.Node(nodetype="simple_expr", value=p[2], child_left_term=p[2], child_right_term=p[3])
     elif len(p) == 2:
         # term
-        p[0] = nodes.SimpleExpression(p[1])
+        p[0] = p[1]
 
 
 def p_term(p: P):
     """term : factor MULT term
             | factor DIV term
             | factor"""
-    print("term")
     if len(p) == 4:
-        # factor {(MULT | DIV)} factor
-        p[0] = nodes.Term(p[1], op=p[2], other_value=p[3])
+        # factor {(MULT | DIV) factor}
+        p[0] = nodes.Node(nodetype="term", value=p[2], child_left_factor=p[1], child_right_factor=p[3])
     elif len(p) == 2:
         # factor
-        p[0] = nodes.Term(p[1])
+        p[0] = p[1]
 
 
 def p_factor(p: P):
     """factor : MINUS atom
               | atom"""
-    print("factor")
     if len(p) == 3:
         # MINUS atom
-        p[0] = nodes.Factor(p[2], has_minus=True)
-    elif len(p) == 1:
+        p[0] = nodes.Node(nodetype="op", value=p[1], child_=p[2])
+    elif len(p) == 2:
         # atom
-        p[0] = nodes.Factor(p[1])
+        p[0] = p[1]
 
 
 def p_atom(p: P):
@@ -399,18 +397,13 @@ def p_atom(p: P):
     """
     if len(p) == 2:
         # IDENT, DECIMAL_LITERAL, function_call, cell_ref
-        p[0] = nodes.Atom(p[1])
+        p[0] = nodes.Node(nodetype="atom", value=p[1])
     elif (len(p)) == 3:
         # NUMBER_SIGN range_expr
-        p[0] = nodes.Atom(p[2], has_number_sign=True)
+        p[0] = nodes.Node(nodetype="atom", value=p[1], child_=p[2])
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
-        p[0] = nodes.Atom(p[2], has_parenthesis=True)
-
-    if type(p[0].value) == str:
-        print(f"atom( {p[0]} )")
-    else:
-        print("atom")
+        p[0] = nodes.Node(nodetype="atom", child_=p[2])
 
 
 def p_function_call(p: P):
