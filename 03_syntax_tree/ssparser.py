@@ -382,7 +382,7 @@ def p_term(p: P):
             | factor"""
     if len(p) == 4:
         # factor {(MULT | DIV) factor}
-        p[0] = nodes.Node(nodetype="term", value=p[2], child_left_factor=p[1], child_right_factor=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[2], child_left=p[1], child_right=p[3])
     elif len(p) == 2:
         # factor
         p[0] = p[1]
@@ -393,7 +393,7 @@ def p_factor(p: P):
               | atom"""
     if len(p) == 3:
         # MINUS atom
-        p[0] = nodes.Node(nodetype="op", value=p[1], child_=p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[1], child_right=p[2])
     elif len(p) == 2:
         # atom
         p[0] = p[1]
@@ -422,11 +422,7 @@ def p_atom(p: P):
             p[0] = p[1]
     elif (len(p)) == 3:
         # NUMBER_SIGN range_expr
-        p[0] = nodes.Node(
-            nodetype=nodes.TYPE_EXPRESSION,
-            value=p[1],
-            child_=p[2]
-        )
+        p[0] = p[1]
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
         p[0] = p[1]

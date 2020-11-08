@@ -8,11 +8,13 @@ TYPE_DECIMAL = "decimal"
 TYPE_EXPRESSION = "expression"
 TYPE_FUNCTION_CALL = "function_call"
 TYPE_NAME = "name"
+TYPE_OP = "op"
 TYPE_PROGRAM = "program"
 TYPE_SHEET_DEFINITION = "sheet_definition"
 TYPE_SHEET_INIT = "sheet_init"
 TYPE_SHEET_INIT_LIST = "sheet_init_list"
 TYPE_SHEET_ROW = "sheet_row"
+TYPE_TERM = "term"
 TYPE_VARIABLE_DEFINITION ="variable_definition"
 
 
