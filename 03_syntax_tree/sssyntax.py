@@ -2,6 +2,12 @@
 A helper to construct the AST.
 """
 
+TYPE_ATOM = "atom"
+TYPE_CELL_REF = "cell_ref"
+TYPE_DECIMAL = "decimal"
+TYPE_EXPRESSION = "expression"
+TYPE_FUNCTION_CALL = "function_call"
+TYPE_NAME = "name"
 TYPE_PROGRAM = "program"
 TYPE_SHEET_DEFINITION = "sheet_definition"
 TYPE_SHEET_INIT = "sheet_init"

@@ -2,7 +2,8 @@
 The syntax parser of SheetScript.
 The order of grammar definition is preserved as given in specification.
 """
-
+import decimal
+from decimal import Decimal
 from typing import List
 
 import ply.yacc
@@ -26,7 +27,7 @@ def p_program(p: P):
                           children_statement_list=p[2])
     else:
         # statement_list
-        p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, child_statement_list=p[1])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, children_statement_list=p[1])
 
 
 # Additional definition for multiple function_or_variable_defs, uses lists
@@ -53,7 +54,8 @@ def p_variable_definition(p: P):
     """variable_definition : scalar_definition
                            | range_definition
                            | sheet_definition"""
-    p[0] = nodes.Node(nodetype=nodes.TYPE_VARIABLE_DEFINITION, child_=p[1])
+    # Omitted
+    p[0] = p[1]
 
 
 def p_function_definition(p: P):
@@ -61,8 +63,8 @@ def p_function_definition(p: P):
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END"""
-    print(f"function_definition( {p[2]} )")
-
+    #print(f"function_definition( {p[2]} )")
+    pass
 
 # helper definition for scalar or range in function
 def p_scalar_or_range(p: P):
@@ -109,10 +111,17 @@ def p_sheet_definition(p: P):
     """
     if len(p) == 4:
         # SHEET SHEET_IDENT sheet_init
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2], child_=p[3])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SHEET_DEFINITION,
+            child_name=nodes.Node(nodetype="SHEET_INIT", value=p[2]),
+            child_sheet_init=p[3]
+        )
     else:
         # SHEET SHEET_IDENT
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_DEFINITION, value=p[2])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SHEET_DEFINITION,
+            child_name=nodes.Node(nodetype="SHEET_INIT", value=p[2]),
+        )
 
 
 def p_sheet_init(p: P):
@@ -121,10 +130,10 @@ def p_sheet_init(p: P):
     """
     if len(p) == 3:
         # EQ sheet_init_list
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=p[1], child_=p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, child_=p[2])
     else:
         # EQ INT_LITERAL MULT INT_LITERAL
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=f"{p[1]} {p[2]} {p[3]} {p[4]}",
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=f"{p[2]} {p[3]} {p[4]}",
                           child_left_int_literal=p[2],
                           child_right_int_literal=p[4])
 
@@ -400,13 +409,27 @@ def p_atom(p: P):
     """
     if len(p) == 2:
         # IDENT, DECIMAL_LITERAL, function_call, cell_ref
-        p[0] = nodes.Node(nodetype="atom", value=p[1])
+        if type(p[1]) == str:
+            # IDENT or DECIMAL_LITERAL
+            try:
+                # decimal_literal
+                p[0] = nodes.Node(nodetype=nodes.TYPE_DECIMAL, value=decimal.Decimal(p[1]))
+            except decimal.InvalidOperation:
+                # ident
+                p[0] = nodes.Node(nodetype=nodes.TYPE_NAME, value=p[1])
+        else:
+            # functional_call or cell_ref
+            p[0] = p[1]
     elif (len(p)) == 3:
         # NUMBER_SIGN range_expr
-        p[0] = nodes.Node(nodetype="atom", value=p[1], child_=p[2])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_EXPRESSION,
+            value=p[1],
+            child_=p[2]
+        )
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
-        p[0] = nodes.Node(nodetype="atom", child_=p[2])
+        p[0] = p[1]
 
 
 def p_function_call(p: P):
