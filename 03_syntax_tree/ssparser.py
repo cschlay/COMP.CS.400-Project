@@ -181,10 +181,17 @@ def p_range_definition(p: P):
                         | RANGE RANGE_IDENT"""
     if len(p) == 5:
         # RANGE RANGE_IDENT EQ range_expr
-        p[0] = nodes.RangeDefinition(name=p[2], value=p[4])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_RANGE_DEFINITION,
+            child_name=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[2]),
+            child_range_expr=p[4]
+        )
     elif len(p) == 3:
         # RANGE RANGE_IDENT
-        p[0] = nodes.RangeDefinition(name=p[2])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_RANGE_DEFINITION,
+            child_name=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[2]),
+        )
 
 
 def p_scalar_definition(p: P):
@@ -192,10 +199,17 @@ def p_scalar_definition(p: P):
                          | SCALAR IDENT"""
     if len(p) == 5:
         # SCALAR IDENT EQ scalar_expr
-        p[0] = nodes.ScalarDefinition(name=p[2], value=p[4])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SCALAR_DEFINITION,
+            child_name=nodes.Node(nodetype=nodes.TYPE_SCALAR, value=p[2]),
+            child_scalar_expr=p[4]
+        )
     elif len(p) == 3:
         # SCALAR IDENT
-        p[0] = nodes.ScalarDefinition(name=p[2])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SCALAR_DEFINITION,
+            child_name=nodes.Node(nodetype=nodes.TYPE_SCALAR, value=p[2]),
+        )
 
 
 # Uses Python list
