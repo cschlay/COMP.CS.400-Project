@@ -23,7 +23,7 @@ def p_program(p: P):
         # multiple_function_or_variable_definition statement_list
         p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM,
                           children_function_or_variable_definition=p[1],
-                          child_statement_list=p[2])
+                          children_statement_list=p[2])
     else:
         # statement_list
         p[0] = nodes.Node(nodetype=nodes.TYPE_PROGRAM, child_statement_list=p[1])
@@ -218,8 +218,16 @@ def p_statement(p: P):
         # PRINT_SHEET [INFO_STRING] SHEET_IDENT
         # PRINT_RANGE [INFO_STRING] range_expr
         # PRINT_SCALAR [INFO_STRING] scalar_expr
-        p[0] = nodes.StatementPrint(p[1:])
-        print(f"statement( {p[1]} )")
+        if len(p) == 4:
+            # has info string
+            p[0] = nodes.Node(
+                nodetype=p[1],
+                child_info_string=nodes.Node(nodetype="info_string", value=p[2]),
+                child_expression=p[3]
+            )
+        else:
+            p[0] = nodes.Node(nodetype=p[1], child_expression=p[2])
+        # TODO: handle the SHEET_IDENT cases.
     elif p[1] == "if":
         # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
         if length == 5:
@@ -227,20 +235,16 @@ def p_statement(p: P):
         elif length == 7:
             # with else
             p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4], else_statement_list=p[6])
-        print("statement( if )")
     elif p[1] == "while":
         # WHILE scalar_expr DO statement_list DONE
         p[0] = nodes.StatementWhile(condition=p[2], statement_list=p[3])
-        print("statement( while )")
     elif p[1] == "for":
         # FOR range_list DO statement_list DONE
         p[0] = nodes.StatementFor(range_list=p[1], statement_list=p[2])
-        print("statement( for )")
     elif p[1] == "return":
         # RETURN scalar_expr
         # RETURN range_expr
         p[0] = nodes.StatementReturn(expression=p[2])
-        print("statement( return )")
     elif type(p[1]) is nodes.Assignment or type(p[1]) is nodes.SubroutineCall:
         # assignment, subroutine_call
         p[0] = nodes.Statement(p[1])
@@ -331,14 +335,13 @@ def p_cell_ref(p: P):
 def p_scalar_expr(p: P):
     """scalar_expr : simple_expr scalar_op scalar_expr
                    | simple_expr"""
-    print("scalar_expr")
     length: int = len(p)
     if length == 3:
         # simple_expr scalar_op scalar_expr
         p[0] = nodes.ScalarExpression(p[1], op=p[2], other_value=p[3])
     elif length == 2:
         # simple_expr
-        p[0] = nodes.ScalarExpression(p[1])
+        p[0] = p[1]
 
 
 # helper rule for scalar expr
