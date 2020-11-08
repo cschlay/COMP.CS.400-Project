@@ -1,16 +1,15 @@
 # Document for Phase 2
 
-The unittest can be run in this directory with:
-
-```
-python -m unittest
-```
-
 To process a file run:
 
 ```
 python main.py -f FILENAME
 ```
+
+I this phase I have put the syntax checker to file `ssparser.py` and the primitive AST nodes
+that are passed forward `ssyntax.py` so that we can print the values properly.
+
+The file `sslexer.py` is from previous phase although some small fixes were made.
 
 ## 1. Syntax analysis
 
