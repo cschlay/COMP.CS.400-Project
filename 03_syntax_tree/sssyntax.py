@@ -2,11 +2,13 @@
 A helper to construct the AST.
 """
 
+TYPE_ASSIGNMENT = "assignment"
 TYPE_ATOM = "atom"
 TYPE_CELL_REF = "cell_ref"
 TYPE_DECIMAL = "decimal"
 TYPE_EXPRESSION = "expression"
 TYPE_FUNCTION_CALL = "function_call"
+TYPE_INT = "int_literal"
 TYPE_NAME = "name"
 TYPE_OP = "op"
 TYPE_PROGRAM = "program"

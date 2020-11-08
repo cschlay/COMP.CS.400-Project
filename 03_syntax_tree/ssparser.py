@@ -63,8 +63,9 @@ def p_function_definition(p: P):
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END"""
-    #print(f"function_definition( {p[2]} )")
+    # print(f"function_definition( {p[2]} )")
     pass
+
 
 # helper definition for scalar or range in function
 def p_scalar_or_range(p: P):
@@ -130,17 +131,20 @@ def p_sheet_init(p: P):
     """
     if len(p) == 3:
         # EQ sheet_init_list
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, child_=p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, children_sheet_init_list=p[2])
     else:
         # EQ INT_LITERAL MULT INT_LITERAL
-        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=f"{p[2]} {p[3]} {p[4]}",
-                          child_left_int_literal=p[2],
-                          child_right_int_literal=p[4])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_OP,
+            value=p[3],
+            child_left=nodes.Node(nodetype=nodes.TYPE_INT, value=p[2]),
+            child_right=nodes.Node(nodetype=nodes.TYPE_INT, value=p[4])
+        )
 
 
 def p_sheet_init_list(p: P):
     """sheet_init_list : LCURLY multiple_sheet_row RCURLY"""
-    p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_INIT_LIST, children_sheet_row=p[2])
+    p[0] = p[2]
 
 
 # additional rule to allow multiple sheet_rows
@@ -261,7 +265,6 @@ def p_statement(p: P):
         # print("statement( assignment )")
 
 
-
 def p_range_list(p: P):
     """range_list : range_expr COMMA range_list
                   | range_expr"""
@@ -299,8 +302,7 @@ def p_assignment(p: P):
                   | cell_ref ASSIGN scalar_expr
                   | RANGE_IDENT ASSIGN range_expr
                   | SHEET_IDENT ASSIGN SHEET_IDENT"""
-    p[0] = nodes.Assignment(variable=p[1], value=p[3])
-    print(f"assignment( {p[1]} )")
+    p[0] = nodes.Node(nodetype=nodes.TYPE_ASSIGNMENT, value=p[1], child_=p[3])
 
 
 def p_range_expr(p: P):
@@ -332,13 +334,21 @@ def p_cell_ref(p: P):
     if length == 3:
         if p[1] == "$":
             # DOLLAR COLON RANGE_IDENT
-            p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", range_ident=p[3], has_dollar=True)
+            p[0] = nodes.Node(
+                nodetype=nodes.TYPE_CELL_REF,
+                child_=nodes.Node(nodetype=nodes.TYPE_NAME, value=p[3])
+            )
         else:
             # SHEET_IDENT SQUOTE COORDINATE_IDENT
-            p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", sheet_ident=p[1], coordinate_ident=True)
+            p[0] = nodes.Node(
+                nodetype=nodes.TYPE_CELL_REF,
+                child_sheet_ident=nodes.Node(nodetype=nodes.TYPE_NAME, value=p[1]),
+                child_coordinate_ident=nodes.Node(nodetype=nodes.TYPE_NAME, value=p[3])
+            )
     elif length == 1:
         # DOLLAR
-        p[0] = nodes.CellRef(p[1], has_dollar=True)
+        # should it be empty?
+        p[0] = nodes.Node(nodetype=nodes.TYPE_CELL_REF)
 
 
 def p_scalar_expr(p: P):
@@ -432,7 +442,6 @@ def p_function_call(p: P):
     """function_call : FUNC_IDENT LSQUARE arguments RSQUARE
                      | FUNC_IDENT LSQUARE RSQUARE"""
     print(f"function_call( {p[1]} )")
-
 
 
 def p_error(p: P):
