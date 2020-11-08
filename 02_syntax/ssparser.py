@@ -315,7 +315,7 @@ def p_cell_ref(p: P):
                 | DOLLAR
     """
     length: int = len(p)
-    if length == 3:
+    if length == 4:
         if p[1] == "$":
             # DOLLAR COLON RANGE_IDENT
             p[0] = nodes.CellRef(f"{p[1]}{p[2]}{p[3]}", range_ident=p[3], has_dollar=True)
