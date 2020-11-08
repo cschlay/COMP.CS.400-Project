@@ -3,7 +3,6 @@ The syntax parser of SheetScript.
 The order of grammar definition is preserved as given in specification.
 """
 import decimal
-from decimal import Decimal
 from typing import List
 
 import ply.yacc
@@ -327,10 +326,10 @@ def p_range_expr(p: P):
     length: int = len(p)
     if length == 2:
         # RANGE_IDENT, should be a reference
-        p[0] = nodes.Node(nodetype=nodes.TYPE_NAME, value=p[1])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[1])
     elif length == 5:
         # RANGE cell_ref DOTDOT cell_ref
-        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_EXPRESSION, value=p[1], child_left=p[2], child_right=p[4])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_EXPRESSION, value=p[1], child_from=p[2], child_to=p[4])
     elif length == 4:
         # LSQUARE function_call RSQUARE
         # TODO:
@@ -351,7 +350,7 @@ def p_cell_ref(p: P):
                 | DOLLAR
     """
     length: int = len(p)
-    if length == 3:
+    if length == 4:
         if p[1] == "$":
             # DOLLAR COLON RANGE_IDENT
             p[0] = nodes.Node(
@@ -362,8 +361,8 @@ def p_cell_ref(p: P):
             # SHEET_IDENT SQUOTE COORDINATE_IDENT
             p[0] = nodes.Node(
                 nodetype=nodes.TYPE_CELL_REF,
-                child_sheet_ident=nodes.Node(nodetype=nodes.TYPE_NAME, value=p[1]),
-                child_coordinate_ident=nodes.Node(nodetype=nodes.TYPE_NAME, value=p[3])
+                child_sheet_ident=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[1]),
+                child_coordinate_ident=nodes.Node(nodetype=nodes.TYPE_COORDINATE_IDENT, value=p[3])
             )
     elif length == 1:
         # DOLLAR
@@ -446,7 +445,7 @@ def p_atom(p: P):
                 p[0] = nodes.Node(nodetype=nodes.TYPE_DECIMAL, value=decimal.Decimal(p[1]))
             except decimal.InvalidOperation:
                 # ident
-                p[0] = nodes.Node(nodetype=nodes.TYPE_NAME, value=p[1])
+                p[0] = nodes.Node(nodetype=nodes.TYPE_IDENT, value=p[1])
         else:
             # functional_call or cell_ref
             p[0] = p[1]
