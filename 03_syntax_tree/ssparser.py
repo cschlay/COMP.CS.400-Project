@@ -347,7 +347,7 @@ def p_scalar_expr(p: P):
     length: int = len(p)
     if length == 3:
         # simple_expr scalar_op scalar_expr
-        p[0] = nodes.ScalarExpression(p[1], op=p[2], other_value=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[2], child_left=p[1], child_right=p[3])
     elif length == 2:
         # simple_expr
         p[0] = p[1]
@@ -370,7 +370,7 @@ def p_simple_expr(p: P):
                    | term"""
     if len(p) == 4:
         # term {(PLUS|MINUS) term}
-        p[0] = nodes.Node(nodetype="simple_expr", value=p[2], child_left_term=p[2], child_right_term=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[2], child_left=p[2], child_right=p[3])
     elif len(p) == 2:
         # term
         p[0] = p[1]
