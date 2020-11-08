@@ -313,16 +313,22 @@ def p_range_expr(p: P):
     length: int = len(p)
     if length == 2:
         # RANGE_IDENT, should be a reference
-        p[0] = nodes.RangeExpression(range_ident=p[1])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_NAME, value=p[1])
     elif length == 5:
         # RANGE cell_ref DOTDOT cell_ref
-        p[0] = nodes.RangeExpression(cell1=p[2], cell2=p[4])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_EXPRESSION, value=p[1], child_left=p[2], child_right=p[4])
     elif length == 4:
         # LSQUARE function_call RSQUARE
-        p[0] = nodes.RangeExpression(function_call=p[2])
+        # TODO:
+        p[0] = p[2]
     elif length == 6:
         # range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE
-        p[0] = nodes.RangeExpression(range_expression=p[1], int_range1=p[3], int_range2=p[5])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_RANGE_EXPRESSION,
+            child_range_expr=p[1],
+            child_from=nodes.Node(nodetype=nodes.TYPE_INT, value=p[3]),
+            child_to=nodes.Node(nodetype=nodes.TYPE_INT, value=p[5])
+        )
 
 
 def p_cell_ref(p: P):
