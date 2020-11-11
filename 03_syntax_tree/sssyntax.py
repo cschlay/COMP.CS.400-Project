@@ -43,7 +43,7 @@ class Node:
 
     def __init__(self, nodetype: str, value: str = None, **kwargs):
         self.nodetype: str = self._validate_nodetype(nodetype)
-        if value:
+        if value is not None:
             self.value: str = value
 
         # Put the children as attributes.

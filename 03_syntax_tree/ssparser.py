@@ -314,7 +314,14 @@ def p_arguments(p: P):
                  | arg_expr"""
     if len(p) == 4:
         # arg_expr COMMA arg_expr
-        p[0] = p[1] + p[3]
+        if type(p[1]) is list and type(p[3]) is list:
+            p[0] = p[1] + p[3]
+        elif type(p[1]) is list and type(p[3]) is not list:
+            p[0] = p[1] + [p[3]]
+        elif type(p[1]) is not list and type(p[3]) is list:
+            p[0] = [p[1]] + p[3]
+        else:
+            p[0] = [p[1], p[3]]
     else:
         # arg_expr
         p[0] = [p[1]]
