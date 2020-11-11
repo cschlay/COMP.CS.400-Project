@@ -312,14 +312,24 @@ def p_range_list(p: P):
 def p_arguments(p: P):
     """arguments : arg_expr COMMA arg_expr
                  | arg_expr"""
-    pass
+    if len(p) == 4:
+        # arg_expr COMMA arg_expr
+        p[0] = p[1] + p[3]
+    else:
+        # arg_expr
+        p[0] = [p[1]]
 
 
 def p_arg_expr(p: P):
     """arg_expr : scalar_expr
                 | range_expr
                 | SHEET_IDENT"""
-    pass
+    if type(p[1]) == nodes.Node:
+        # scalar_expr or range_expr
+        p[0] = p[1]
+    else:
+        # SHEET IDENT
+        p[0] = nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[1])
 
 
 def p_subroutine_call(p: P):
@@ -346,7 +356,7 @@ def p_assignment(p: P):
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_ASSIGNMENT,
             child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[1]),
-            child_ref=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[3])
+            child_sheet_ident=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[3])
         )
     elif p[3].nodetype == nodes.TYPE_RANGE_EXPRESSION:
         # RANGE_IDENT ASSIGN range_expr
@@ -403,7 +413,7 @@ def p_cell_ref(p: P):
             # DOLLAR COLON RANGE_IDENT
             p[0] = nodes.Node(
                 nodetype=nodes.TYPE_CELL_REF,
-                child_=nodes.Node(nodetype=nodes.TYPE_NAME, value=p[3])
+                child_range_ident=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[3])
             )
         else:
             # SHEET_IDENT SQUOTE COORDINATE_IDENT
@@ -495,7 +505,7 @@ def p_atom(p: P):
                 # ident
                 p[0] = nodes.Node(nodetype=nodes.TYPE_IDENT, value=p[1])
         else:
-            # functional_call or cell_ref
+            # function_call or cell_ref
             p[0] = p[1]
     elif (len(p)) == 3:
         # NUMBER_SIGN range_expr
