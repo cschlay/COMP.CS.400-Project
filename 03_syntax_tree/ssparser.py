@@ -246,36 +246,55 @@ def p_statement(p: P):
         # PRINT_SCALAR [INFO_STRING] scalar_expr
         if len(p) == 4:
             # has info string
-            p[0] = nodes.Node(
-                nodetype=p[1],
-                child_info_string=nodes.Node(nodetype="info_string", value=p[2]),
-                child_expression=p[3]
-            )
+            if type(p[3]) is nodes.Node:
+                # range_expr or scalar_expr
+                p[0] = nodes.Node(
+                    nodetype=p[1],
+                    child_info_string=nodes.Node(nodetype=nodes.TYPE_INFO_STRING, value=p[2]),
+                    child_expression=p[3]
+                )
+            else:
+                # sheet_ident
+                p[0] = nodes.Node(
+                    nodetype=p[1],
+                    child_info_string=nodes.Node(nodetype=nodes.TYPE_INFO_STRING, value=p[2]),
+                    child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[3])
+                )
         else:
-            p[0] = nodes.Node(nodetype=p[1], child_expression=p[2])
-        # TODO: handle the SHEET_IDENT cases.
+            # without info string
+            if type(p[2]) is nodes.Node:
+                p[0] = nodes.Node(nodetype=p[1], child_expression=p[2])
+            else:
+                p[0] = nodes.Node(nodetype=p[1], child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[2]))
     elif p[1] == "if":
         # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
         if length == 5:
-            p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4])
+            p[0] = nodes.Node(
+                nodetype=nodes.TYPE_IF,
+                child_condition=p[2],
+                children_then_statement_list=p[4]
+            )
         elif length == 7:
             # with else
-            p[0] = nodes.StatementIf(condition=p[2], if_statement_list=p[4], else_statement_list=p[6])
+            p[0] = nodes.Node(
+                nodetype=nodes.TYPE_IF,
+                child_condition=p[2],
+                children_then_statement_list=p[4],
+                children_else_statement_list=p[6]
+            )
     elif p[1] == "while":
         # WHILE scalar_expr DO statement_list DONE
-        p[0] = nodes.StatementWhile(condition=p[2], statement_list=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_IF, children_condition=p[2], children_statement_list=p[4])
     elif p[1] == "for":
         # FOR range_list DO statement_list DONE
-        p[0] = nodes.StatementFor(range_list=p[1], statement_list=p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_FOR, children_range_list=p[2], children_statement_list=p[4])
     elif p[1] == "return":
         # RETURN scalar_expr
         # RETURN range_expr
-        p[0] = nodes.StatementReturn(expression=p[2])
-    elif type(p[1]) is nodes.Assignment or type(p[1]) is nodes.SubroutineCall:
+        p[0] = nodes.Node(nodetype=nodes.TYPE_RETURN, child_=p[2])
+    else:
         # assignment, subroutine_call
-        p[0] = nodes.Statement(p[1])
-        # Seems like this shoulnd't print
-        # print("statement( assignment )")
+        p[0] = p[1]
 
 
 def p_range_list(p: P):
