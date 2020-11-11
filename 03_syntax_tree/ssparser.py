@@ -63,7 +63,7 @@ def p_function_definition(p: P):
                            | FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END"""
     # print(f"function_definition( {p[2]} )")
-    pass
+    p[0] = nodes.Node(nodetype=nodes.TYPE_FUNCTION_DEFINITION)
 
 
 # helper definition for scalar or range in function
@@ -372,13 +372,15 @@ def p_range_expr(p: P):
     length: int = len(p)
     if length == 2:
         # RANGE_IDENT, should be a reference
-        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[1])
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_RANGE_EXPRESSION,
+            child_ref=nodes.Node(nodes.TYPE_RANGE_IDENT, value=p[1])
+        )
     elif length == 5:
         # RANGE cell_ref DOTDOT cell_ref
         p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_EXPRESSION, value=p[1], child_from=p[2], child_to=p[4])
     elif length == 4:
         # LSQUARE function_call RSQUARE
-        # TODO:
         p[0] = p[2]
     elif length == 6:
         # range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE
@@ -506,7 +508,20 @@ def p_atom(p: P):
 def p_function_call(p: P):
     """function_call : FUNC_IDENT LSQUARE arguments RSQUARE
                      | FUNC_IDENT LSQUARE RSQUARE"""
-    print(f"function_call( {p[1]} )")
+
+    if len(p) == 4:
+        # FUNC_IDENT LSQUARE RSQUARE
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_FUNCTION_CALL,
+            child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT, value=p[1]),
+        )
+    else:
+        # With args
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_FUNCTION_CALL,
+            child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT, value=p[1]),
+            children_arguments=p[3]
+        )
 
 
 def p_error(p: P):
