@@ -268,13 +268,13 @@ def p_statement(p: P):
                 p[0] = nodes.Node(nodetype=p[1], child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[2]))
     elif p[1] == "if":
         # IF scalar_expr THEN statement_list [ELSE statement_list] ENDIF
-        if length == 5:
+        if length == 6:
             p[0] = nodes.Node(
                 nodetype=nodes.TYPE_IF,
                 child_condition=p[2],
                 children_then_statement_list=p[4]
             )
-        elif length == 7:
+        elif length == 8:
             # with else
             p[0] = nodes.Node(
                 nodetype=nodes.TYPE_IF,
@@ -291,7 +291,7 @@ def p_statement(p: P):
     elif p[1] == "return":
         # RETURN scalar_expr
         # RETURN range_expr
-        p[0] = nodes.Node(nodetype=nodes.TYPE_RETURN, child_=p[2])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_RETURN, child_expression=p[2])
     else:
         # assignment, subroutine_call
         p[0] = p[1]
@@ -419,17 +419,17 @@ def p_cell_ref(p: P):
                 child_sheet_ident=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[1]),
                 child_coordinate_ident=nodes.Node(nodetype=nodes.TYPE_COORDINATE_IDENT, value=p[3])
             )
-    elif length == 1:
+    elif length == 2:
         # DOLLAR
         # should it be empty?
-        p[0] = nodes.Node(nodetype=nodes.TYPE_CELL_REF)
+        p[0] = nodes.Node(nodetype=nodes.TYPE_CELL_REF, value=p[1])
 
 
 def p_scalar_expr(p: P):
     """scalar_expr : simple_expr scalar_op scalar_expr
                    | simple_expr"""
     length: int = len(p)
-    if length == 3:
+    if length == 4:
         # simple_expr scalar_op scalar_expr
         p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[2], child_left=p[1], child_right=p[3])
     elif length == 2:
