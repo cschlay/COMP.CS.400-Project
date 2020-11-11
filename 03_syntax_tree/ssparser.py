@@ -183,7 +183,7 @@ def p_range_definition(p: P):
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_RANGE_DEFINITION,
             child_name=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[2]),
-            child_range_expr=p[4]
+            child_expression=p[4]
         )
     elif len(p) == 3:
         # RANGE RANGE_IDENT
@@ -382,21 +382,18 @@ def p_range_expr(p: P):
     length: int = len(p)
     if length == 2:
         # RANGE_IDENT, should be a reference
-        p[0] = nodes.Node(
-            nodetype=nodes.TYPE_RANGE_EXPRESSION,
-            child_ref=nodes.Node(nodes.TYPE_RANGE_IDENT, value=p[1])
-        )
+        p[0] = nodes.Node(nodes.TYPE_RANGE_IDENT, value=p[1])
     elif length == 5:
         # RANGE cell_ref DOTDOT cell_ref
-        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_EXPRESSION, value=p[1], child_from=p[2], child_to=p[4])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_RANGE_EXPRESSION, child_from=p[2], child_to=p[4])
     elif length == 4:
         # LSQUARE function_call RSQUARE
         p[0] = p[2]
-    elif length == 6:
+    elif length == 7:
         # range_expr LSQUARE INT_LITERAL COMMA INT_LITERAL RSQUARE
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_RANGE_EXPRESSION,
-            child_range_expr=p[1],
+            child_expression=p[1],
             child_from=nodes.Node(nodetype=nodes.TYPE_INT, value=p[3]),
             child_to=nodes.Node(nodetype=nodes.TYPE_INT, value=p[5])
         )
