@@ -334,7 +334,34 @@ def p_assignment(p: P):
                   | cell_ref ASSIGN scalar_expr
                   | RANGE_IDENT ASSIGN range_expr
                   | SHEET_IDENT ASSIGN SHEET_IDENT"""
-    p[0] = nodes.Node(nodetype=nodes.TYPE_ASSIGNMENT, value=p[1], child_=p[3])
+    if type(p[1]) is nodes.Node:
+        # cell_ref ASSIGN scalar_expr
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_ASSIGNMENT,
+            child_cell_ref=p[1],
+            child_expression=p[3]
+        )
+    elif type(p[3]) is not nodes.Node:
+        # SHEET_IDENT ASSIGN SHEET_IDENT
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_ASSIGNMENT,
+            child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[1]),
+            child_ref=nodes.Node(nodetype=nodes.TYPE_SHEET_IDENT, value=p[3])
+        )
+    elif p[3].nodetype == nodes.TYPE_RANGE_EXPRESSION:
+        # RANGE_IDENT ASSIGN range_expr
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_ASSIGNMENT,
+            child_name=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[1]),
+            child_expression=p[3]
+        )
+    else:
+        # IDENT ASSIGN scalar_expr
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_ASSIGNMENT,
+            child_name=nodes.Node(nodetype=nodes.TYPE_IDENT, value=p[1]),
+            child_expression=p[3]
+        )
 
 
 def p_range_expr(p: P):
