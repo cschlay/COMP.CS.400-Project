@@ -89,7 +89,23 @@ def p_multiple_variable_definition(p: P):
 def p_subroutine_definition(p: P):
     """subroutine_definition : SUBROUTINE FUNC_IDENT LSQUARE RSQUARE IS multiple_variable_definition statement_list END
                              | SUBROUTINE FUNC_IDENT LSQUARE formals RSQUARE IS multiple_variable_definition statement_list END"""
-    print(f"subroutine_definition( {p[2]} )")
+    length: int = len(p)
+    if length == 9:
+        # without formals
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SUBROUTINE_DEFINITION,
+            child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT),
+            children_variable_definitions=p[6],
+            children_statement_list=p[7]
+        )
+    else:
+        # with formals
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SUBROUTINE_DEFINITION,
+            child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT),
+            children_variable_definitions=p[7],
+            children_statement_list=p[8]
+        )
 
 
 def p_formals(p: P):
