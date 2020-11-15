@@ -40,3 +40,50 @@ p[0] = nodes.Node(nodetype="node1", child_left=p[1], child_right=p[2]
 
 In this case we use the node that was assigned in other rules.
 
+## 3. Tree structure
+
+### a) Variable definitions
+
+In my implementation I think it could have been reduced because the `p_variable_definition` only
+had one child that referred to `scalar_definition`, `range_definition`, and `sheet_definition`.
+
+So in this answer I we take a closer look to those three.
+
+In scalar definition I have a nodetype called `TYPE_SCALAR_DEFINITION` that has two possible structure
+the node has name `child_name` which is the variable name. Then optionally `child_scalar_expr` if expression
+is given. In short, it should look something like:
+
+```
+scalar_definition:
+    name: scalar (THE_IDENT)
+    expression: THE_EXPRESSION
+```
+
+For range definition we have similar structure and the result should be similar
+
+```
+range_definition:
+    name: RANGE_IDENT (THE_IDENT)
+    expression: THE_EXPRESSION```
+```
+
+The sheet_init has mostly same structure except there isn't expression. 
+Instead of `expression` there is `child_sheet_init`.
+
+```
+range_definition:
+    name: SHEET_INIT (THE_IDENT)
+    sheet_init: THE_SHEET```
+```
+
+### b) For loop
+
+
+
+### c) Function call
+
+## 4.
+
+## 5.
+
+## 6.

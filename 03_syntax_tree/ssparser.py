@@ -201,7 +201,7 @@ def p_scalar_definition(p: P):
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_SCALAR_DEFINITION,
             child_name=nodes.Node(nodetype=nodes.TYPE_SCALAR, value=p[2]),
-            child_scalar_expr=p[4]
+            child_expression=p[4]
         )
     elif len(p) == 3:
         # SCALAR IDENT
