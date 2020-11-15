@@ -62,8 +62,33 @@ def p_function_definition(p: P):
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
                            | FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END"""
-    # print(f"function_definition( {p[2]} )")
-    p[0] = nodes.Node(nodetype=nodes.TYPE_FUNCTION_DEFINITION)
+    length: int = len(p)
+
+    p[0] = nodes.Node(
+        nodetype=nodes.TYPE_FUNCTION_DEFINITION,
+        child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT, value=p[2])
+    )
+    if length == 10:
+        # FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS statement_list END
+        p[0].child_return_type = nodes.Node(nodetype=nodes.TYPE_RETURN_TYPE, value=p[6])
+        p[0].children_statement_list = p[8]
+    elif length == 11:
+        if p[4] == ']':
+            # FUNCTION FUNC_IDENT LSQUARE RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
+            p[0].child_return_type = nodes.Node(nodetype=nodes.TYPE_RETURN_TYPE, value=p[6])
+            p[0].children_variable_definitions = p[8]
+            p[0].children_statement_list = p[9]
+        else:
+            # FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS statement_list END
+            p[0].child_return_type = nodes.Node(nodetype=nodes.TYPE_RETURN_TYPE, value=p[7])
+            p[0].children_formals = p[4]
+            p[0].children_statement_list = p[9]
+    elif length == 12:
+        # FUNCTION FUNC_IDENT LSQUARE formals RSQUARE RETURN scalar_or_range IS multiple_variable_definition statement_list END
+        p[0].child_return_type = nodes.Node(nodetype=nodes.TYPE_RETURN_TYPE, value=p[7])
+        p[0].children_formals = p[4]
+        p[0].children_variable_definitions = p[9]
+        p[0].children_statement_list = p[10]
 
 
 # helper definition for scalar or range in function
