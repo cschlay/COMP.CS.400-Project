@@ -586,7 +586,7 @@ def p_atom(p: P):
         p[0] = p[1]
     elif (len(p)) == 4:
         # LPAREN scalar_expr RPAREN
-        p[0] = p[1]
+        p[0] = p[2]
 
 
 def p_function_call(p: P):
