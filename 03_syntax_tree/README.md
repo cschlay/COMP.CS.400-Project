@@ -106,7 +106,34 @@ We can be sure that statement `0` writen before `m` can be iterated in that orde
 
 TODO
 
-## 4.
+## 4. About implementation
+   
+### a)
+
+### b) Simplifications
+
+Yes, there are I list them below by rule name. Mostly the purpose is that I can pass list as `children_` or
+I think there is no purpose for it e.g. single child, helpers, and syntactical (brackets or so).
+I denoted them as such below.
+
+- `p_multiple_function_or_variable_definition`, list
+- `p_function_or_variable_definition`, single
+- `p_variable_definition`, single
+- `p_scalar_or_range`, helper
+- `p_multiple_variable_definition`, helper, list
+- `p_sheet_init_list`, brackets
+- `p_multiple_sheet_row`, list
+- `p_statement_list`, list
+- `p_statement`, only `assignment` and `subroutine_call`, single
+- `p_range_list`, list
+- `p_arguments`, list
+- `p_arg_expr`, only for `scalar_expr` and `range_expr`, single
+- `p_scalar_expr`, only for the single `simple_expr`
+- `p_scalar_op`, helper
+- `p_simple_expr`, only for single `term`
+- `p_term`, only for single `factor`
+- `p_factor`, only for single `atom`
+- `p_atom`, only for `range_expr` and `scalar_expr` because don't know if number sign is necessary for `range_expr`. The `scalar_expr` because of brackets.
 
 ## 5.
 

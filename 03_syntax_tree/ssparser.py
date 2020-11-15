@@ -146,8 +146,6 @@ def p_sheet_init_list(p: P):
     p[0] = p[2]
 
 
-# additional rule to allow multiple sheet_rows
-# doesn't do it with class but a list of sheet rows
 def p_multiple_sheet_row(p: P):
     """multiple_sheet_row : sheet_row multiple_sheet_row
                           | sheet_row"""
@@ -211,7 +209,7 @@ def p_scalar_definition(p: P):
         )
 
 
-# Uses Python list
+
 def p_statement_list(p: P):
     """statement_list : statement statement_list
                       | statement"""
