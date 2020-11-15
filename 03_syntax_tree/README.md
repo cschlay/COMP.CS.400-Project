@@ -145,3 +145,24 @@ I denoted them as such below.
 ## 5.
 
 ## 6.
+
+I think it took some time think and wonder how the tree should look like.
+I attempted to follow the example output but didn't do so in for every rule because it was
+easier to define them other way.
+
+The difficulty I had was that there are nodes printed as
+
+```
+sheet_init: sheet_init
+```
+
+which were hard to resolve to look better but I did what I could.
+
+Another hard thing was how to name things properly because in the public examples
+they looked like the names followed the concept of the syntax such as idents are all childs named `name` but
+when it is not obvious I resorted to just the child same as rule name.
+
+The easiest part was that things could be converted from phase 2 which was quite clear.
+
+I learned more about constructing the tree although some primitive attempt was done in phase 2 to make it print the rule calls.
+So a great improvement happened.
