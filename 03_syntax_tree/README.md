@@ -108,7 +108,14 @@ TODO
 
 ## 4. About implementation
    
-### a)
+### a) Empty childs
+
+I think it shouldn't be possible to happen anywhere unless there are errors in the code
+such as invalid `len(p)` checks. I found some of those that were incorrectly set in phase 2.
+
+I have purposely set those length checks so that they construct slightly different nodes based on 
+the syntax. So if e.g. `p_program` doesn't have variable definitions then the only child constructed is `children_statement_list` and
+that cannot be `None` or `[]` because it would be syntax error as the further rules require it to have a valid `statement`.
 
 ### b) Simplifications
 
