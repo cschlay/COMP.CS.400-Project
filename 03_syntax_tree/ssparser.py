@@ -109,16 +109,35 @@ def p_subroutine_definition(p: P):
 
 
 def p_formals(p: P):
-    """formals : formal_arg COMMA formal_arg
+    """formals : formals COMMA formal_arg
                | formal_arg"""
-    pass
+    length: int = len(p)
+    if length == 4:
+        p[0] = p[1] + [p[3]]
+    else:
+        p[0] = [p[1]]
+
 
 
 def p_formal_arg(p: P):
     """formal_arg : IDENT COLON SCALAR
                   | RANGE_IDENT COLON RANGE
                   | SHEET_IDENT COLON SHEET"""
-    pass
+    if p[3] == 'scalar':
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_FORMAL_ARG,
+            child_name=nodes.Node(nodetype=nodes.TYPE_IDENT, value=p[1])
+        )
+    elif p[3] == 'range':
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_FORMAL_ARG,
+            child_name=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[1])
+        )
+    elif p[3] == 'sheet':
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_FORMAL_ARG,
+            child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=p[1])
+        )
 
 
 def p_sheet_definition(p: P):
