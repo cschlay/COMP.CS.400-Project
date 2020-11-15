@@ -42,6 +42,8 @@ In this case we use the node that was assigned in other rules.
 
 ## 3. Tree structure
 
+Notice that `TYPE_` prefixed are constants defined in `sssyntax.py` and referred here as such.
+
 ### a) Variable definitions
 
 In my implementation I think it could have been reduced because the `p_variable_definition` only
@@ -78,9 +80,31 @@ range_definition:
 
 ### b) For loop
 
+The for loop is only defined inside `p_statement`. In there I defined
+nodetype `TYPE_FOR`. As the thing between `FOR range_list DO statement_list DONE` the
+keywords there can be multiple of those so they return lists and they get passed as children
+`chilren_range_list` and `children_statement_list` to make it easier to iterate later.
 
+The end result should be something like:
+
+```
+for:
+    range_list[0]: 
+        ...
+    range_list[n]:
+        ...
+    statement_list[0]:
+        ...
+    statement_list[m]:
+        ...
+```
+
+The list arguments printed in the tree with the number is just the order of range is written and statements are also ordered.
+We can be sure that statement `0` writen before `m` can be iterated in that order.
 
 ### c) Function call
+
+TODO
 
 ## 4.
 
