@@ -151,16 +151,19 @@ def p_formal_arg(p: P):
     if p[3] == 'scalar':
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_FORMAL_ARG,
+            value=p[3],
             child_name=nodes.Node(nodetype=nodes.TYPE_IDENT, value=p[1])
         )
     elif p[3] == 'range':
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_FORMAL_ARG,
+            value=p[3],
             child_name=nodes.Node(nodetype=nodes.TYPE_RANGE_IDENT, value=p[1])
         )
     elif p[3] == 'sheet':
         p[0] = nodes.Node(
             nodetype=nodes.TYPE_FORMAL_ARG,
+            value=p[3],
             child_name=nodes.Node(nodetype=nodes.TYPE_SHEET_INIT, value=p[1])
         )
 

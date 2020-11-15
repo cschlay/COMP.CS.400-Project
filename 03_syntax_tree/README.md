@@ -104,7 +104,27 @@ We can be sure that statement `0` writen before `m` can be iterated in that orde
 
 ### c) Function call
 
-TODO
+In function call, I defined a type `TYPE_FUNCTION_CALL`. It has two structures with and without arguments.
+The function has name so a child `child_name` was is given and if the call has arguments it was given as children
+`children_arguments`.
+
+In the end the function call should be something like:
+
+```
+function_call:
+    name: FUNC_IDENT (FUNCTION_NAME)
+    arguments[0]:
+        ...
+    arguments[n]:
+        ...
+```
+
+or without arguments
+
+```
+function_call:
+    name: FUNC_IDENT (FUNCTION_NAME)
+```
 
 ## 4. About implementation
    
@@ -159,9 +179,10 @@ sheet_init: sheet_init
 
 which were hard to resolve to look better but I did what I could.
 
-Another hard thing was how to name things properly because in the public examples
-they looked like the names followed the concept of the syntax such as idents are all childs named `name` but
-when it is not obvious I resorted to just the child same as rule name.
+Another hard thing was how to name things properly. In the public examples
+they looked like the names followed the concept of the syntax such as idents are all child named `name` but
+when it is not obvious I resorted to just the child same as rule name. Also what should be in `value` was hard to
+decide.
 
 The easiest part was that things could be converted from phase 2 which was quite clear.
 
