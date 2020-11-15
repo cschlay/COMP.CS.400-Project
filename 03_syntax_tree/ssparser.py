@@ -487,7 +487,7 @@ def p_simple_expr(p: P):
                    | term"""
     if len(p) == 4:
         # term {(PLUS|MINUS) term}
-        p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[2], child_left=p[2], child_right=p[3])
+        p[0] = nodes.Node(nodetype=nodes.TYPE_OP, value=p[2], child_left=p[1], child_right=p[3])
     elif len(p) == 2:
         # term
         p[0] = p[1]
