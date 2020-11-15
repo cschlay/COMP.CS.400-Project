@@ -356,8 +356,20 @@ def p_arg_expr(p: P):
 def p_subroutine_call(p: P):
     """subroutine_call : FUNC_IDENT LSQUARE arguments RSQUARE
                        | FUNC_IDENT LSQUARE RSQUARE"""
-    print(f"subroutine_call( {p[1]} )")
-    p[0] = nodes.SubroutineCall(function_name=p[1], arguments=p[3])
+    length: int = len(p)
+    if length == 5:
+        # with arguments
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SUBROUTINE_CALL,
+            child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT, value=p[1]),
+            children_arguments=p[3]
+        )
+    else:
+        # without arguments
+        p[0] = nodes.Node(
+            nodetype=nodes.TYPE_SUBROUTINE_CALL,
+            child_name=nodes.Node(nodetype=nodes.TYPE_FUNC_IDENT, value=p[1])
+        )
 
 
 def p_assignment(p: P):
